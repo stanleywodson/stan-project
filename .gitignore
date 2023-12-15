@@ -6,8 +6,8 @@
 .env
 .env.backup
 .phpunit.result.cache
-docker-compose.yml
-Dockerfile
+/docker-compose.yml
+/Dockerfile
 Homestead.json
 Homestead.yaml
 npm-debug.log
