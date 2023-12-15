@@ -20,7 +20,7 @@ services:
         image: nginx:alpine
         restart: unless-stopped
         ports:
-            - "8080:80"
+            - "8081:80"
         volumes:
             - ./:/var/www
             - ./docker/nginx/:/etc/nginx/conf.d/
