@@ -20,13 +20,13 @@ services:
         image: nginx:alpine
         restart: unless-stopped
         ports:
-            - "80:80"
+            - "8080:80"
         volumes:
             - ./:/var/www
             - ./docker/nginx/:/etc/nginx/conf.d/
         networks:
             - laravel
-            
+
     node:
         image: node:18
         working_dir: /usr/src/app
