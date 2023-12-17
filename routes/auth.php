@@ -38,6 +38,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         ->name('register');
 
     Route::post('register', [RegisteredUserController::class, 'store']);
+
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
 });
 
 Route::middleware('auth')->group(function () {
@@ -58,7 +61,4 @@ Route::middleware('auth')->group(function () {
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
-
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
 });
