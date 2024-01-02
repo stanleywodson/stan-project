@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
@@ -35,15 +36,15 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'permissions' => [
+                'admin' =>  fn () => $request->user() ? $request->user()->hasPermission('admin') : false,
+                'financial' =>  fn () => $request->user() ? $request->user()->hasPermission('financial') : false,
+                'media' =>  fn () => $request->user() ? $request->user()->hasPermission('media') : false,
+                'leader' =>  fn () => $request->user() ? $request->user()->hasPermission('leader') : false,
+            ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
-            ],
-            'permissions' => [
-                'admin' => $request->user()->hasPermission('admin'),
-                'financial' => $request->user()->hasPermission('financial'),
-                'media' => $request->user()->hasPermission('media'),
-                'leader' => $request->user()->hasPermission('leader'),
             ],
         ];
     }
