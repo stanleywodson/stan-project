@@ -1,14 +1,15 @@
 import { useState, PropsWithChildren, ReactNode } from 'react';
-import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link } from '@inertiajs/react';
-import { User } from '@/types';
+import { PageProps, User } from '@/types';
 import { MenuLeft } from '@/Components/MenuLeft';
+import { usePage } from '@inertiajs/react';
 
 export default function Authenticated({ user, header, children }: PropsWithChildren<{ user: User, header?: ReactNode }>) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false)
+    const permission = usePage<PageProps>().props.permissions
+
 
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -21,22 +22,27 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                                     <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                                 </Link>
                             </div> */}
-
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                    Painel
-                                </NavLink>
-                            </div>
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('register')} active={route().current('register')}>
-                                    Cadastro
-                                </NavLink>
-                            </div>
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('financial.index')} active={route().current('financial.index')}>
-                                    Financeiro
-                                </NavLink>
-                            </div>
+                            {permission.admin &&
+                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                    <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                        Painel
+                                    </NavLink>
+                                </div>
+                            }
+                            {permission.admin &&
+                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                    <NavLink href={route('register')} active={route().current('register')}>
+                                        Cadastro
+                                    </NavLink>
+                                </div>
+                            }
+                            {permission.financial &&
+                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                    <NavLink href={route('financial.index')} active={route().current('financial.index')}>
+                                        Financeiro
+                                    </NavLink>
+                                </div>
+                            }
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
