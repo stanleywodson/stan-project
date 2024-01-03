@@ -7,13 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/test', function() {
-    $per = [];
-foreach(auth()->user()->permissions as $permission) {
-     array_push($per, $permission['name']);
-}
-print_r($per);
-});
 Route::get('/', SiteController::class)->name('home');
 
 Route::get('/admin/dashboard', function () {
@@ -31,13 +24,12 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::resource('/financial', FinancialController::class)->middleware('can:financial');
 });
 
+// Route::fallback(function () {
+//     $user = Auth::user();
+//     if (!$user) {
+//         return redirect()->route('home');
+//     }
+//     return redirect()->route('login');
+// });
 
-Route::fallback(function () {
-    $user = Auth::user();
-    if (!$user) {
-        return redirect()->route('home');
-    }
-    return redirect()->route('login');
-});
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
