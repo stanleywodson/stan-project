@@ -1,9 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin\FinancialController;
+use App\Http\Controllers\Admin\{
+    FinancialController,
+    PermissionUserController,
+    UserController
+};
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Site\SiteController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,6 +25,17 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     //Financial
     Route::resource('/financial', FinancialController::class)->middleware('can:financial');
+
+    Route::middleware('can:admin')->group(function () {
+        //Users
+        Route::get('users', [UserController::class, 'index'])->name('users.index');
+
+        //User - Permissions
+        Route::get('user-permission/{id}', [PermissionUserController::class, 'permissions'])
+            ->name('user-permission');
+        Route::get('permission-user/{permission}', [PermissionUserController::class, 'users'])
+            ->name('permission-user');
+    });
 });
 
 // Route::fallback(function () {
