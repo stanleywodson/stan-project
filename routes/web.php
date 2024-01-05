@@ -36,6 +36,12 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         Route::get('permission-user/{permission}', [PermissionUserController::class, 'users'])
             ->name('permission-user');
     });
+
+    Route::middleware('can:leader')->group(function () {
+        Route::get('leader', function () {
+            return Inertia::render('Admin/Leader');
+        })->name('leader.index');
+    });
 });
 
 // Route::fallback(function () {

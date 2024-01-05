@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\PainelPermission;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
@@ -34,7 +35,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        $user = auth()->user();
+        $painel = new PainelPermission($user);
+
+        return redirect()->intended($painel->painelByPermissionUser());
+        // return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**
