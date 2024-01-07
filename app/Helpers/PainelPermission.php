@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+// declare(strict_types=1);
 
 namespace App\Helpers;
 
@@ -14,12 +14,14 @@ class PainelPermission
     ) {
     }
 
-    public function painelByPermissionUser(): string
+    public function painelByPermissionUser()
     {
-        $user = $this->user->with('permissions')->find($this->user->id);
-        $permissions = $user->permissions;
-        $permission = $permissions[0]['name'];
-
+        $permissions = $this->user->permissions;
+        if (count($permissions) > 0) {
+            $permission = $permissions[0]['name'];
+        } else {
+            $permission = '';
+        }
         switch ($permission) {
             case "admin":
                 return RouteServiceProvider::HOME;
@@ -30,7 +32,7 @@ class PainelPermission
             case "leader":
                 return RouteServiceProvider::LEADER;
             default:
-                return redirect()->back();
+                return RouteServiceProvider::WITHOUTPERMISSION;
         }
     }
 }

@@ -42,6 +42,11 @@ Route::middleware('auth')->prefix('admin')->group(function () {
             return Inertia::render('Admin/Leader');
         })->name('leader.index');
     });
+
+    //Page - WithOutPermission
+    Route::get('without-permission', function () {
+        return Inertia::render('Admin/WithOutPermission');
+    })->name('withoutpermission');
 });
 
 // Route::fallback(function () {

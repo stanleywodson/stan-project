@@ -8,8 +8,12 @@ import { usePage } from '@inertiajs/react';
 
 export default function Authenticated({ user, header, children }: PropsWithChildren<{ user: User, header?: ReactNode }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false)
+
     const permission = usePage<PageProps>().props.permissions
 
+    const dontHavePermission = () => {
+        return Object.values(permission).every(item => item === false)
+    }
 
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -48,6 +52,14 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                                 <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                     <NavLink href={route('leader.index')} active={route().current('leader.index')}>
                                         Líder
+                                    </NavLink>
+                                </div>
+                            }
+
+                            {dontHavePermission() &&
+                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                    <NavLink href={route('withoutpermission')} active={route().current('withoutpermission')}>
+                                        Painel
                                     </NavLink>
                                 </div>
                             }
@@ -146,9 +158,8 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                     <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
                 </header>
             )}
-
             <div className="flex">
-                <MenuLeft />
+                { !dontHavePermission() && <MenuLeft /> }
                 <main className="flex-1">{children}</main>
             </div>
         </div>

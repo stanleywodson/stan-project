@@ -21,6 +21,7 @@ class RouteServiceProvider extends ServiceProvider
     public const FINANCIAL = 'admin/financial';
     public const MEDIA = 'admin/media';
     public const LEADER = 'admin/leader';
+    public const WITHOUTPERMISSION = 'admin/without-permission';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
