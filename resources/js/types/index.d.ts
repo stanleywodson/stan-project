@@ -14,10 +14,19 @@ export interface Permissions {
     media: boolean
 }
 
+export interface Links {
+    active: boolean
+    label: string
+    url: string | null
+}
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User
     },
     permissions: Permissions
-    users: User[]
+    users: {
+        data: User[]
+        links: Links[]
+    }
 };

@@ -17,8 +17,8 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = $this->user->all();
-        
+        $users = $this->user->paginate(5);
+
         return Inertia::render('Admin/User', [
             'users' => $users,
         ]);
