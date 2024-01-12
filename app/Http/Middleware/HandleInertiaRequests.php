@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\SidebarMenu;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
@@ -36,12 +36,9 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'permissions' => [
-                'admin' =>  fn () => $request->user() ? $request->user()->hasPermission('admin') : false,
-                'financial' =>  fn () => $request->user() ? $request->user()->hasPermission('financial') : false,
-                'media' =>  fn () => $request->user() ? $request->user()->hasPermission('media') : false,
-                'leader' =>  fn () => $request->user() ? $request->user()->hasPermission('leader') : false,
-            ],
+
+            'sidebarMenus' => fn () => $request->user() ? SidebarMenu::getMenuItems() : [],
+
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

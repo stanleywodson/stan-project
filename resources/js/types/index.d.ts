@@ -7,24 +7,30 @@ export interface User {
     updated_at?: string
 }
 
-export interface Permissions {
-    admin: boolean
-    financial: boolean
-    leader: boolean
-    media: boolean
-}
-
 export interface Links {
     active: boolean
     label: string
     url: string | null
 }
 
+export interface SidebarMenu {
+    label: string
+    icon: string|null
+    url: string
+}
+
+interface Sidebar {
+    title: string
+    items: SidebarMenu[]
+}
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User
     },
-    permissions: Permissions
+ 
+    sidebarMenus: Sidebar[]
+
     users: {
         data: User[]
         links: Links[]

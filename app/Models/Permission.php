@@ -16,4 +16,13 @@ class Permission extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    public static function getPermissionsName(User $user)
+    {
+        $permissions = [];
+        foreach ($user->permissions as $permission) {
+            $permissions[$permission->name] = $permission->id;
+        }
+        return $permissions;
+    }
 }
