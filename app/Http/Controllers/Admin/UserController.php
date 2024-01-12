@@ -17,10 +17,21 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = $this->user->paginate(5);
+        $users = $this->user->with('permissions')->paginate(5);
 
         return Inertia::render('Admin/User', [
             'users' => $users,
         ]);
     }
+    //--- Estou usando um find no Front-End para retornar esse Usuário ----->
+    // public function show(User $user)
+    // {
+    //     $permissions = $user->permissions()->pluck('name');
+
+    //     return Inertia::render('Admin/User', [
+    //         'user' => $user,
+    //         'permission' => $permissions,
+    //     ]);
+
+    // }
 }

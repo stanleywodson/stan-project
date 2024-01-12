@@ -13,6 +13,22 @@ export interface Links {
     url: string | null
 }
 
+export interface Permissions {
+    created_at: string | null
+    id: number
+    name: string
+}
+
+interface UserData {
+    id: number
+    name: string
+    email: string
+    email_verified_at?: string | null
+    created_at?: string | null
+    updated_at?: string | null
+    permissions?: Permissions[]
+}
+
 export interface SidebarMenu {
     label: string
     icon: string|null
@@ -28,11 +44,11 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     auth: {
         user: User
     },
- 
+
     sidebarMenus: Sidebar[]
 
     users: {
-        data: User[]
+        data: UserData[]
         links: Links[]
     }
 };
