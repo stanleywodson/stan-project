@@ -32,7 +32,7 @@ export default function User({ auth, users }: PageProps) {
             <Head title="Usuários" />
             <div className="mt-2">
                 <div className="max-w-8xl mx-auto sm:px-6 lg:px-8">
-                    <div className="relative overflow-x-auto shadow-md sm:rounded-sm">
+                    <div className="relative overflow-x-auto shadow-md sm:rounded-sm mt-4">
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
@@ -63,6 +63,7 @@ export default function User({ auth, users }: PageProps) {
                                             {email}
                                         </td>
                                         <td className="px-6 py-4 flex-col gap-1 inline-flex">
+                                            {!permissions?.length && <span className="text-center">-</span>}
                                             {permissions?.map(({ name, id }) => (
                                                 // <span className="bg-gray-100 text-gray-800 font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300 uppercase text-xs">{name}</span>
                                                 <span key={id} className="uppercase text-xs">{name}</span>

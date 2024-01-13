@@ -14,7 +14,6 @@ export interface Links {
 }
 
 export interface Permissions {
-    created_at: string | null
     id: number
     name: string
 }
