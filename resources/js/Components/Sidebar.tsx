@@ -1,7 +1,6 @@
 import { PageProps } from "@/types"
 import { usePage } from "@inertiajs/react"
 import NavLink from "./NavLink"
-import { Users } from "@phosphor-icons/react/dist/ssr"
 
 export const Sidebar = () => {
     const menus = usePage<PageProps>().props.sidebarMenus
@@ -15,11 +14,11 @@ export const Sidebar = () => {
                             <div key={item.title}>
                                 <h1 className="text-gray-500 text-base  uppercase tracking-widest font-thin leading-7 border-gray-700 px-2 py-2 " key={item.title}>{item.title}</h1>
                                 <div className="mb-4">
-                                    {item.items.map((subItem, index) => (
-                                        <div key={index} className="flex items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                            <NavLink href={route(subItem.url)} active={route().current(subItem.url)} >
-                                                 {subItem.label}
-                                                 {/* <Users size={28} className="rounded-sm mr-3 text-gray-200 bg-gray-600 p-1" /> */}
+                                    {item.items.map(({ label, url }, index) => (
+                                        <div key={index} className="p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                            <NavLink href={route(url)} active={route().current(url)} >
+                                                {label}
+                                                {/* <Users size={28} className="rounded-sm mr-3 text-gray-200 bg-gray-600 p-1" /> */}
                                             </NavLink >
                                         </div>
                                     ))}

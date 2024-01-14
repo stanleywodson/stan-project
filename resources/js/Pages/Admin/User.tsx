@@ -1,13 +1,14 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import { PageProps, UserData } from '@/types';
-import { Paginate } from '@/Components/Paginate';
-import TextInput from '@/Components/TextInput';
-import InputLabel from '@/Components/InputLabel';
-import InputError from '@/Components/InputError';
-import SecondaryButton from '@/Components/SecondaryButton';
-import Modal from '@/Components/Modal';
-import { useState } from 'react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
+import { Head } from '@inertiajs/react'
+import { PageProps, UserData } from '@/types'
+import { Paginate } from '@/Components/Paginate'
+import TextInput from '@/Components/TextInput'
+import InputLabel from '@/Components/InputLabel'
+import InputError from '@/Components/InputError'
+import SecondaryButton from '@/Components/SecondaryButton'
+import Modal from '@/Components/Modal'
+import { useState } from 'react'
+import PrimaryButton from '@/Components/PrimaryButton'
 
 export default function User({ auth, users }: PageProps) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false)
@@ -15,6 +16,8 @@ export default function User({ auth, users }: PageProps) {
 
     const confirmUserEdition = (id: number) => {
         const findUser = users.data?.find((user) => user.id === id)
+        if (!findUser) return
+
         setUser(findUser)
         setConfirmingUserDeletion(true)
     }
@@ -22,7 +25,13 @@ export default function User({ auth, users }: PageProps) {
     const closeModal = () => {
         setConfirmingUserDeletion(false)
         // reset();
-    };
+    }
+
+    const submit = (e: any) => {
+        e.preventDefault()
+        alert('stanley wodson')
+        setConfirmingUserDeletion(false)
+    }
 
     return (
         <AuthenticatedLayout
@@ -88,36 +97,61 @@ export default function User({ auth, users }: PageProps) {
                 </div>
             </div>
 
-            <Modal show={confirmingUserDeletion} onClose={closeModal} closeable={false}>
-                <form className="p-6">
+            <Modal show={confirmingUserDeletion} onClose={closeModal} closeable={false} maxWidth={'5xl'}>
+                <form onSubmit={submit} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 uppercase">
                         {user?.name}
                     </h2>
 
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        Modal para edição de Usuário!
-                    </p>
+                    {/* <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                        Once your account is deleted, all of its resources and data will be permanently deleted. Please
+                        enter your password to confirm you would like to permanently delete your account.
+                    </p> */}
+                    <div className="flex p-2">
+                        <div className="flex-1">
+                            <InputLabel htmlFor="stanley" value="stanley" className="sr-only" />
 
-                    <div className="mt-6">
-                        <InputLabel htmlFor="password" value="Password" className="sr-only" />
+                            <TextInput
+                                id="stanley"
+                                type="text"
+                                name="password"
+                                // ref={passwordInput}
+                                // value={data.password}
+                                // onChange={(e) => setData('password', e.target.value)}
+                                className="mt-1 block w-3/4"
+                                isFocused
+                                placeholder="Password"
+                            />
 
-                        <TextInput
-                            id="password"
-                            type="password"
-                            name="password"
-                            // ref={passwordInput}
-                            // value={data.password}
-                            // onChange={(e) => setData('password', e.target.value)}
-                            className="mt-1 block w-3/4"
-                            isFocused
-                            placeholder="Password"
-                        />
-
-                        <InputError message={''} className="mt-2" />
+                            <InputError message={''} className="mt-2" />
+                        </div>
+                        {/* Inputs Checkbox */}
+                        {/* <div className="flex flex-1 gap-2">
+                            <div className='inline-flex p-2 gap-2 items-center border border-gray-700 rounded-md'>
+                                <label className='text-gray-300' htmlFor="leader">Líder</label>
+                                <input className='bg-gray-700' checked={true} type="checkbox" name="leader" id="" />
+                            </div>
+                            <div className='inline-flex p-2 gap-2 items-center border border-gray-700 rounded-md'>
+                                <label className='text-gray-300' htmlFor="admin">Admin</label>
+                                <input className='bg-gray-700' checked={true} type="checkbox" name="admin" id="" />
+                            </div>
+                            <div className='inline-flex p-2 gap-2 items-center border border-gray-700 rounded-md'>
+                                <label className='text-gray-300' htmlFor="media">Mídia</label>
+                                <input className='bg-gray-700' checked={true} type="checkbox" name="media" id="" />
+                            </div>
+                            <div className='inline-flex p-2 gap-2 items-center border border-gray-700 rounded-md'>
+                                <label className='text-gray-300' htmlFor="financial">Financeiro</label>
+                                <input className='bg-gray-700' checked={true} type="checkbox" name="financial" id="" />
+                            </div>
+                            <InputError message={''} className="mt-2" />
+                        </div> */}
                     </div>
 
                     <div className="mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>Cancelar</SecondaryButton>
+                        <PrimaryButton className="ms-4" disabled={false}>
+                            salvar
+                        </PrimaryButton>
                     </div>
                 </form>
             </Modal>
