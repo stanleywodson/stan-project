@@ -23,7 +23,6 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                                 </Link>
                             </div>
                         </div>
-
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
                             <div className="ms-3 relative">
                                 <Dropdown>

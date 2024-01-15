@@ -44,16 +44,19 @@ class PermissionUserController extends Controller
             'users' => $users,
         ]);
     }
-    //-------------------------------
-    public function permissionsAvailable($idProfile)
+    public function permissionsAvailable($idUser)
     {
-        if (!$profile = $this->profile->find($idProfile))
+        if (!$user = $this->user->find($idUser))
             return redirect()->back();
 
-        $permissions = $profile->permissionsAvailable();
+        $permissions = $user->permissionsAvailable();
 
-        return view('admin.pages.profiles.permissions.available', compact('profile', 'permissions'));
+        // return Inertia::render('Admin/PermissionUser', [
+        //     'users' => $users,
+        //     'permission' => $permissions,
+        // ]);
     }
+    //-------------------------------
 
     //vincular uma ou mais  permissões a certo perfil
     public function attachPermissionProfile(Request $request, $idProfile)

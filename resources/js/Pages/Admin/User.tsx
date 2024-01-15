@@ -11,26 +11,27 @@ import { useState } from 'react'
 import PrimaryButton from '@/Components/PrimaryButton'
 
 export default function User({ auth, users }: PageProps) {
-    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false)
+    const [confirmingUserEdition, setconfirmingUserEdition] = useState(false)
     const [user, setUser] = useState<UserData>()
+    const [data, setData] = useState() // posteriormente vai ser substituido pelo useForm
 
     const confirmUserEdition = (id: number) => {
         const findUser = users.data?.find((user) => user.id === id)
         if (!findUser) return
 
         setUser(findUser)
-        setConfirmingUserDeletion(true)
+        setconfirmingUserEdition(true)
     }
 
     const closeModal = () => {
-        setConfirmingUserDeletion(false)
+        setconfirmingUserEdition(false)
         // reset();
     }
 
     const submit = (e: any) => {
         e.preventDefault()
         alert('stanley wodson')
-        setConfirmingUserDeletion(false)
+        setconfirmingUserEdition(false)
     }
 
     return (
@@ -38,10 +39,10 @@ export default function User({ auth, users }: PageProps) {
             user={auth.user}
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Usuários</h2>}
         >
-            <Head title="Usuários" />
+            <Head title="Permissões" />
             <div className="mt-2">
-                <div className="max-w-8xl mx-auto sm:px-6 lg:px-8">
-                    <div className="relative overflow-x-auto shadow-md sm:rounded-sm mt-4">
+                <div className="max-w-8xl mx-auto">
+                    <div className="relative overflow-x-auto shadow-sm mt-4">
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
@@ -97,7 +98,7 @@ export default function User({ auth, users }: PageProps) {
                 </div>
             </div>
 
-            <Modal show={confirmingUserDeletion} onClose={closeModal} closeable={false} maxWidth={'5xl'}>
+            <Modal show={confirmingUserEdition} onClose={closeModal} closeable={false} maxWidth={'2xl'}>
                 <form onSubmit={submit} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 uppercase">
                         {user?.name}
@@ -110,41 +111,36 @@ export default function User({ auth, users }: PageProps) {
                     <div className="flex p-2">
                         <div className="flex-1">
                             <InputLabel htmlFor="stanley" value="stanley" className="sr-only" />
-
-                            <TextInput
-                                id="stanley"
-                                type="text"
-                                name="password"
-                                // ref={passwordInput}
-                                // value={data.password}
-                                // onChange={(e) => setData('password', e.target.value)}
-                                className="mt-1 block w-3/4"
-                                isFocused
-                                placeholder="Password"
-                            />
-
+                            {/* Checkbox */}
+                            <span className='mt-4 uppercase text-xs text-gray-300'>Vincular Permissões</span>
+                            <ul className="mt-2 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div className="flex items-center ps-3">
+                                        <input id="vue-checkbox-list" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                            <label htmlFor="vue-checkbox-list" className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Admin</label>
+                                    </div>
+                                </li>
+                                <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div className="flex items-center ps-3">
+                                        <input id="react-checkbox-list" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                            <label htmlFor="react-checkbox-list" className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Leader</label>
+                                    </div>
+                                </li>
+                                <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div className="flex items-center ps-3">
+                                        <input id="angular-checkbox-list" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                            <label htmlFor="angular-checkbox-list" className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Media</label>
+                                    </div>
+                                </li>
+                                <li className="w-full dark:border-gray-600">
+                                    <div className="flex items-center ps-3">
+                                        <input id="laravel-checkbox-list" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                            <label htmlFor="laravel-checkbox-list" className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Financial</label>
+                                    </div>
+                                </li>
+                            </ul>
                             <InputError message={''} className="mt-2" />
                         </div>
-                        {/* Inputs Checkbox */}
-                        {/* <div className="flex flex-1 gap-2">
-                            <div className='inline-flex p-2 gap-2 items-center border border-gray-700 rounded-md'>
-                                <label className='text-gray-300' htmlFor="leader">Líder</label>
-                                <input className='bg-gray-700' checked={true} type="checkbox" name="leader" id="" />
-                            </div>
-                            <div className='inline-flex p-2 gap-2 items-center border border-gray-700 rounded-md'>
-                                <label className='text-gray-300' htmlFor="admin">Admin</label>
-                                <input className='bg-gray-700' checked={true} type="checkbox" name="admin" id="" />
-                            </div>
-                            <div className='inline-flex p-2 gap-2 items-center border border-gray-700 rounded-md'>
-                                <label className='text-gray-300' htmlFor="media">Mídia</label>
-                                <input className='bg-gray-700' checked={true} type="checkbox" name="media" id="" />
-                            </div>
-                            <div className='inline-flex p-2 gap-2 items-center border border-gray-700 rounded-md'>
-                                <label className='text-gray-300' htmlFor="financial">Financeiro</label>
-                                <input className='bg-gray-700' checked={true} type="checkbox" name="financial" id="" />
-                            </div>
-                            <InputError message={''} className="mt-2" />
-                        </div> */}
                     </div>
 
                     <div className="mt-6 flex justify-end">

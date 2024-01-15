@@ -19,15 +19,26 @@ class SidebarMenu
                     [
                         'title' => 'Administração',
                         'items' => [
+
                             [
-                                'label' => 'Permissões',
+                                'label' => 'Dashboard',
                                 'url' => 'dashboard',
-                                'icon' => 'dashboard'
+                                'icon' => 'users'
                             ],
                             [
-                                'label' => 'Usuários',
+                                'label' => 'Permissões de Usuário',
                                 'url' => 'users.index',
                                 'icon' => 'users'
+                            ],
+                            [
+                                'label' => 'Células',
+                                'url' => 'test',
+                                'icon' => 'users'
+                            ],
+                            [
+                                'label' => 'Financeiro',
+                                'url' => 'financial.index',
+                                'icon' => 'financial'
                             ],
                         ],
                     ]
@@ -41,10 +52,26 @@ class SidebarMenu
                         'title' => 'Líder',
                         'items' => [
                             [
-                                'label' => 'discipulos',
+                                'label' => 'célula',
                                 'url' => 'leader.index',
                                 'icon' => 'dashboard'
                             ],
+                            [
+                                'label' => 'estudo',
+                                'url' => 'test',
+                                'icon' => 'dashboard'
+                            ],
+                            [
+                                'label' => 'membros',
+                                'url' => 'test',
+                                'icon' => 'dashboard'
+                            ],
+                            [
+                                'label' => 'discipulado',
+                                'url' => 'test',
+                                'icon' => 'dashboard'
+                            ],
+
                         ],
                     ]
                 ];
@@ -64,6 +91,11 @@ class SidebarMenu
                             [
                                 'label' => 'Oferta',
                                 'url' => 'financial.create',
+                                'icon' => 'dashboard'
+                            ],
+                            [
+                                'label' => 'Encontro com Deus',
+                                'url' => 'test',
                                 'icon' => 'dashboard'
                             ],
                         ],

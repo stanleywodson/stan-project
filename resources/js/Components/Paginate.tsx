@@ -5,7 +5,7 @@ import React from "react"
 export const Paginate = (props: { data: Links[] }) => {
     return (
         <nav className="flex items-center flex-column flex-wrap md:flex-row pt-4 justify-end" aria-label="Table navigation">
-            <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+            <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 mb-2">
                 {React.Children.toArray(
                     props.data.map((link) => {
                         if (link.url !== null) {

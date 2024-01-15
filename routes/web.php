@@ -10,6 +10,7 @@ use App\Http\Controllers\Site\SiteController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+Route::get('/test', fn () => 'test')->name('test');
 Route::get('/', SiteController::class)->name('home');
 
 Route::get('/admin/dashboard', function () {
