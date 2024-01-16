@@ -1,22 +1,27 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head } from '@inertiajs/react'
-import { PageProps, UserData } from '@/types'
+import { PageProps, Permissions, UserData } from '@/types'
 import { Paginate } from '@/Components/Paginate'
-import TextInput from '@/Components/TextInput'
 import InputLabel from '@/Components/InputLabel'
 import InputError from '@/Components/InputError'
 import SecondaryButton from '@/Components/SecondaryButton'
 import Modal from '@/Components/Modal'
 import { useState } from 'react'
-import PrimaryButton from '@/Components/PrimaryButton'
+import DangerButton from '@/Components/DangerButton'
+import { Link } from "@inertiajs/react"
 
-export default function User({ auth, users }: PageProps) {
+export default function User({ auth, users, permissions }: PageProps<{ permissions: Permissions[] }>) {
     const [confirmingUserEdition, setconfirmingUserEdition] = useState(false)
     const [user, setUser] = useState<UserData>()
-    const [data, setData] = useState() // posteriormente vai ser substituido pelo useForm
+    const [permissionAvaliable, setPermissionAvaliable] = useState<Permissions[]>()
 
     const confirmUserEdition = (id: number) => {
         const findUser = users.data?.find((user) => user.id === id)
+
+        const permissionsAvaliable =
+            permissions.filter(permission => !findUser?.permissions?.find(({ id }) => id === permission.id))
+
+        setPermissionAvaliable(permissionsAvaliable)
         if (!findUser) return
 
         setUser(findUser)
@@ -103,51 +108,50 @@ export default function User({ auth, users }: PageProps) {
                     <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 uppercase">
                         {user?.name}
                     </h2>
-
-                    {/* <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        Once your account is deleted, all of its resources and data will be permanently deleted. Please
-                        enter your password to confirm you would like to permanently delete your account.
-                    </p> */}
                     <div className="flex p-2">
                         <div className="flex-1">
                             <InputLabel htmlFor="stanley" value="stanley" className="sr-only" />
                             {/* Checkbox */}
                             <span className='mt-4 uppercase text-xs text-gray-300'>Vincular Permissões</span>
                             <ul className="mt-2 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                    <div className="flex items-center ps-3">
-                                        <input id="vue-checkbox-list" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                            <label htmlFor="vue-checkbox-list" className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Admin</label>
-                                    </div>
-                                </li>
-                                <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                    <div className="flex items-center ps-3">
-                                        <input id="react-checkbox-list" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                            <label htmlFor="react-checkbox-list" className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Leader</label>
-                                    </div>
-                                </li>
-                                <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                    <div className="flex items-center ps-3">
-                                        <input id="angular-checkbox-list" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                            <label htmlFor="angular-checkbox-list" className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Media</label>
-                                    </div>
-                                </li>
-                                <li className="w-full dark:border-gray-600">
-                                    <div className="flex items-center ps-3">
-                                        <input id="laravel-checkbox-list" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                            <label htmlFor="laravel-checkbox-list" className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Financial</label>
-                                    </div>
-                                </li>
+                                {permissionAvaliable?.map(({ name, id }, index) => (
+                                    <li className={`w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600`}>
+                                        <div className="flex items-center ps-3">
+                                            <input id={name} type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                            <label htmlFor={name} className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300 uppercase">{name}</label>
+                                        </div>
+                                    </li>
+                                ))}
                             </ul>
                             <InputError message={''} className="mt-2" />
                         </div>
                     </div>
+                    {!user?.permissions?.length ? null :
+                        <div className="flex p-2 mt-2">
+                            <div className="flex-1">
+                                <InputLabel htmlFor="stanley" value="stanley" className="sr-only" />
+                                <span className='mt-4 uppercase text-xs text-gray-300'>desvincular permissões</span>
+                                <div className="bg-gray-700 p-2 rounded-lg mt-2 space-y-1">
+                                    {user?.permissions?.map(({ name, id }) => (
+                                        <div className="flex items-center max-w-xs justify-between">
+                                            <span key={id} className="uppercase text-xs text-gray-300">{name}</span>
+                                            <Link href={route('permission-user', [user.id, id])} preserveState>
+                                                <DangerButton>
+                                                    desvincular
+                                                </DangerButton>
+                                            </Link>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    }
 
                     <div className="mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>Cancelar</SecondaryButton>
-                        <PrimaryButton className="ms-4" disabled={false}>
+                        {/* <PrimaryButton className="ms-4" disabled={false}>
                             salvar
-                        </PrimaryButton>
+                        </PrimaryButton> */}
                     </div>
                 </form>
             </Modal>

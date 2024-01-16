@@ -17,33 +17,42 @@ class PermissionUserController extends Controller
     ) {
     }
 
-    public function permissions($idPermission): Response
-    {
-        $user = $this->user->with('permissions')->find($idPermission);
-        if (!$user) {
-            return redirect()->back();
-        }
-        $permissions = $user->permissions;
+    // public function permissions()
+    // {
+    //     $permissions = $this->permission->all(['id', 'name']);
+    //     return Inertia::render('Admin/PermissionUser', [
+    //         'permissions' => $permissions,
+    //     ]);
 
-        return Inertia::render('Admin/PermissionUser', [
-            'user' => $user,
-            'permissions' => $permissions,
-        ]);
-    }
+    // }
 
-    public function users($idUser): Response
-    {
-        $permission = $this->permission->with('users')->find($idUser);
-        if (!$permission) {
-            return redirect()->back();
-        }
-        $users = $permission->users;
+    // public function permissions($idPermission): Response
+    // {
+    //     $user = $this->user->with('permissions')->find($idPermission);
+    //     if (!$user) {
+    //         return redirect()->back();
+    //     }
+    //     $permissions = $user->permissions;
 
-        return Inertia::render('Admin/PermissionUser', [
-            'permission' => $permission,
-            'users' => $users,
-        ]);
-    }
+    //     return Inertia::render('Admin/PermissionUser', [
+    //         'user' => $user,
+    //         'permissions' => $permissions,
+    //     ]);
+    // }
+
+    // public function users($idUser): Response
+    // {
+    //     $permission = $this->permission->with('users')->find($idUser);
+    //     if (!$permission) {
+    //         return redirect()->back();
+    //     }
+    //     $users = $permission->users;
+
+    //     return Inertia::render('Admin/PermissionUser', [
+    //         'permission' => $permission,
+    //         'users' => $users,
+    //     ]);
+    // }
     public function permissionsAvailable($idUser)
     {
         if (!$user = $this->user->find($idUser))
@@ -72,16 +81,18 @@ class PermissionUserController extends Controller
         return redirect()->route('profiles.permissions', $profile->id)->with('permissions', 'Viculado com sucesso!');
     }
     //desvincular uma ou mais permissões ao perfis
-    public function detachPermissionProfile($idProfile, $idPermission)
+    public function detachPermissionProfile($idUser, $idPermission)
     {
-        $profile = $this->profile->find($idProfile);
+        $user = $this->user->find($idUser);
 
         $permission = $this->permission->find($idPermission);
 
-        if (!$profile || !$permission)
+        if (!$user || !$permission)
             return redirect()->back();
 
-        $profile->permissions()->detach($permission);
-        return redirect()->route('profiles.permissions', $profile->id);
+        $user->permissions()->detach($permission);
+        // return redirect()->route('profiles.permissions', $profile->id);
+        return redirect()->route('users.index');
+
     }
 }
