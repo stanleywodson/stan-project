@@ -33,9 +33,12 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         // Route::get('users/{user}/show', [UserController::class, 'show'])->name('users.show');
 
         //User - Permissions
-        Route::get('user-permission/{id}', [PermissionUserController::class, 'permissions'])
-            ->name('user-permission');
-        Route::get('permission-user/{permission}', [PermissionUserController::class, 'users'])
+        // Route::get('user-permission/{id}', [PermissionUserController::class, 'permissions'])
+        //     ->name('user-permission');
+        // Route::get('permission-user/{permission}', [PermissionUserController::class, 'users'])
+        //     ->name('permission-user');
+
+        Route::get('permission-user/{user}/{permission}', [PermissionUserController::class, 'detachPermissionProfile'])
             ->name('permission-user');
     });
 
