@@ -37,6 +37,10 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
 
+            'flash' => [
+                'attach' => fn () => $request->session()->get('attach')
+            ],
+
             'sidebarMenus' => fn () => $request->user() ? SidebarMenu::getMenuItems() : [],
 
             'ziggy' => fn () => [
