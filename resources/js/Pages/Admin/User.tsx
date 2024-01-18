@@ -2,7 +2,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, Link } from '@inertiajs/react'
 import { PageProps, Permissions, UserData } from '@/types'
 import { Paginate } from '@/Components/Paginate'
-import InputLabel from '@/Components/InputLabel'
 import SecondaryButton from '@/Components/SecondaryButton'
 import Modal from '@/Components/Modal'
 import { useEffect, useState } from 'react'
@@ -16,6 +15,8 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
     const [user, setUser] = useState<UserData>()
     const [permissionAvaliable, setPermissionAvaliable] = useState<Permissions[]>()
 
+    const permissionWithOutAdmin = permissions.filter(({ id }) => id !== 1)
+
     useEffect(() => {
         if (flash.attach) {
             toast.success(flash.attach)
@@ -28,8 +29,9 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
     const confirmUserEdition = (id: number) => {
         const findUser = users.data?.find((user) => user.id === id)
 
-        const permissionsAvaliable =
-            permissions.filter(permission => !findUser?.permissions?.find(({ id }) => id === permission.id))
+        const permissionsAvaliable = permissionWithOutAdmin.filter(
+            permission => !findUser?.permissions?.find(({ id }) => id === permission.id
+            ))
 
         setPermissionAvaliable(permissionsAvaliable)
         if (!findUser) return
@@ -71,33 +73,34 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
                                 </tr>
                             </thead>
                             <tbody>
-                                {users.data?.map(({ name, email, id, permissions }) => (
-                                    <tr key={id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {name}
-                                        </th>
-                                        <td className="px-6 py-4">
-                                            {email}
-                                        </td>
-                                        <td className="px-6 py-4 flex-col gap-1 inline-flex">
-                                            {!permissions?.length && <span className="text-center">-</span>}
-                                            {permissions?.map(({ name, id }) => (
-                                                // <span className="bg-gray-100 text-gray-800 font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300 uppercase text-xs">{name}</span>
-                                                <span key={id} className="uppercase text-xs">{name}</span>
-                                            ))}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className="uppercase text-xs">ativo</span>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                                {/* <Link href={route('users.show', [id])} > Editar</Link> */}
-                                                <span onClick={() => confirmUserEdition(id)}>Editar</span>
+                                {users.data?.map(({ name, email, id, permissions }) => {
+                                    return id === 1 ? '' :
+                                        <tr key={id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                {name}
+                                            </th>
+                                            <td className="px-6 py-4">
+                                                {email}
+                                            </td>
+                                            <td className="px-6 py-4 flex-col gap-1 inline-flex">
+                                                {!permissions?.length && <span className="text-center">-</span>}
+                                                {permissions?.map(({ name, id }) => (
+                                                    // <span className="bg-gray-100 text-gray-800 font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300 uppercase text-xs">{name}</span>
+                                                    <span key={id} className="uppercase text-xs">{name}</span>
+                                                ))}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className="uppercase text-xs">ativo</span>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                                    {/* <Link href={route('users.show', [id])} > Editar</Link> */}
+                                                    <span onClick={() => confirmUserEdition(id)}>Editar</span>
 
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                })}
                             </tbody>
                         </table>
                         <Paginate data={users.links} />
@@ -110,7 +113,7 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
                     <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 uppercase">
                         {user?.name}
                     </h2>
-                    <div className='flex-col w-80 sm:w-full'>
+                    <div className='flex-col w-80 sm:w-full space-y-4'>
                         {!permissionAvaliable?.length ? null :
                             <div>
                                 <span className='mt-4 uppercase text-xs text-gray-300'>Vincular Permissões</span>
