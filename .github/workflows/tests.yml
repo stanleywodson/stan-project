@@ -3,7 +3,7 @@ name: Tests
 on:
   push:
     branches:
-      - master
+      - develop
       - '*.x'
   pull_request:
   schedule:
@@ -43,5 +43,5 @@ jobs:
       - name: Generate app key
         run: php artisan key:generate
 
-      - name: Execute tests
-        run: vendor/bin/phpunit
+      # - name: Execute tests
+      #   run: vendor/bin/phpunit

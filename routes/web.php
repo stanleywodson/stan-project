@@ -30,16 +30,14 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::middleware('can:admin')->group(function () {
         //Users
         Route::get('users', [UserController::class, 'index'])->name('users.index');
-        // Route::get('users/{user}/show', [UserController::class, 'show'])->name('users.show');
 
-        //User - Permissions
-        // Route::get('user-permission/{id}', [PermissionUserController::class, 'permissions'])
-        //     ->name('user-permission');
-        // Route::get('permission-user/{permission}', [PermissionUserController::class, 'users'])
-        //     ->name('permission-user');
-
+        // Permission User
+        //detach
         Route::get('permission-user/{user}/{permission}', [PermissionUserController::class, 'detachPermissionProfile'])
             ->name('permission-user');
+        //atach
+        Route::get('permission-user-atach/{user}/{permission}', [PermissionUserController::class, 'attachPermissionProfile'])
+            ->name('permission-user-atach');
     });
 
     Route::middleware('can:leader')->group(function () {

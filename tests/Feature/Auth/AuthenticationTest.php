@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\PainelPermission;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 
@@ -17,8 +18,10 @@ test('users can authenticate using the login screen', function () {
         'password' => 'password',
     ]);
 
+    $painel = new PainelPermission($user);
+
     $this->assertAuthenticated();
-    $response->assertRedirect(RouteServiceProvider::HOME);
+    $response->assertRedirect($painel->painelByPermissionUser());
 });
 
 test('users can not authenticate with invalid password', function () {
@@ -38,5 +41,5 @@ test('users can logout', function () {
     $response = $this->actingAs($user)->post('/logout');
 
     $this->assertGuest();
-    $response->assertRedirect('/');
+    $response->assertRedirect('/login');
 });

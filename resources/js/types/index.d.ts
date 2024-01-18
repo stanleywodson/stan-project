@@ -50,4 +50,9 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
         data: UserData[]
         links: Links[]
     }
+
+    flash: {
+        attach: string
+        detach: string
+    }
 };

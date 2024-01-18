@@ -17,68 +17,20 @@ class PermissionUserController extends Controller
     ) {
     }
 
-    // public function permissions()
-    // {
-    //     $permissions = $this->permission->all(['id', 'name']);
-    //     return Inertia::render('Admin/PermissionUser', [
-    //         'permissions' => $permissions,
-    //     ]);
-
-    // }
-
-    // public function permissions($idPermission): Response
-    // {
-    //     $user = $this->user->with('permissions')->find($idPermission);
-    //     if (!$user) {
-    //         return redirect()->back();
-    //     }
-    //     $permissions = $user->permissions;
-
-    //     return Inertia::render('Admin/PermissionUser', [
-    //         'user' => $user,
-    //         'permissions' => $permissions,
-    //     ]);
-    // }
-
-    // public function users($idUser): Response
-    // {
-    //     $permission = $this->permission->with('users')->find($idUser);
-    //     if (!$permission) {
-    //         return redirect()->back();
-    //     }
-    //     $users = $permission->users;
-
-    //     return Inertia::render('Admin/PermissionUser', [
-    //         'permission' => $permission,
-    //         'users' => $users,
-    //     ]);
-    // }
-    public function permissionsAvailable($idUser)
-    {
-        if (!$user = $this->user->find($idUser))
-            return redirect()->back();
-
-        $permissions = $user->permissionsAvailable();
-
-        // return Inertia::render('Admin/PermissionUser', [
-        //     'users' => $users,
-        //     'permission' => $permissions,
-        // ]);
-    }
-    //-------------------------------
-
     //vincular uma ou mais  permissões a certo perfil
-    public function attachPermissionProfile(Request $request, $idProfile)
+    public function attachPermissionProfile($idUser, $idPermission)
     {
-        if (!$profile = $this->profile->with('permissions')->find($idProfile))
+        $permission = $this->permission->find($idPermission);
+        $user = $this->user->find($idUser);
+
+        if (!$this->user->with('permissions')->find($idUser))
             return redirect()->back();
 
-        if (!$request->permissions || count($request->permissions) == 0) {
-            return redirect()->back()->with('error', 'Checkbox vazio');
-        }
+        $user->permissions()->attach($idPermission);
 
-        $profile->permissions()->attach($request->permissions);
-        return redirect()->route('profiles.permissions', $profile->id)->with('permissions', 'Viculado com sucesso!');
+        return redirect()
+            ->route('users.index')
+            ->with('attach', "Permissão {$permission->name} foi vinculada ao {$user->name}");
     }
     //desvincular uma ou mais permissões ao perfis
     public function detachPermissionProfile($idUser, $idPermission)
@@ -91,8 +43,9 @@ class PermissionUserController extends Controller
             return redirect()->back();
 
         $user->permissions()->detach($permission);
-        // return redirect()->route('profiles.permissions', $profile->id);
-        return redirect()->route('users.index');
 
+        return redirect()
+            ->route('users.index')
+            ->with('detach', "Permissão {$permission->name} foi desvinculada ao {$user->name}");
     }
 }

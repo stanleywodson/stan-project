@@ -25,6 +25,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "@phosphor-icons/react": "^2.0.15"
+        "@phosphor-icons/react": "^2.0.15",
+        "react-toastify": "^10.0.3"
     }
 }
