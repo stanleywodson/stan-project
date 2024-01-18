@@ -44,6 +44,8 @@ class PermissionUserController extends Controller
 
         $user->permissions()->detach($permission);
 
-        return redirect()->route('users.index');
+        return redirect()
+            ->route('users.index')
+            ->with('detach', "Permissão {$permission->name} foi desvinculada ao {$user->name}");
     }
 }

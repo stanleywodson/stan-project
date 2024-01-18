@@ -53,5 +53,6 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
 
     flash: {
         attach: string
+        detach: string
     }
 };
