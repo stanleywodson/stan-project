@@ -18,12 +18,12 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
 
     useEffect(() => {
         if (flash.attach) {
-          toast.success(flash.attach)
+            toast.success(flash.attach)
         }
         if (flash.detach) {
             toast.error(flash.detach)
-          }
-      }, [flash])
+        }
+    }, [flash])
 
     const confirmUserEdition = (id: number) => {
         const findUser = users.data?.find((user) => user.id === id)
@@ -49,7 +49,7 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
             <div className="mt-2">
                 <div className="max-w-8xl mx-auto">
                     <div className="relative overflow-x-auto shadow-sm mt-4">
-                            <ToastContainer />
+                        <ToastContainer />
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
@@ -105,19 +105,19 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
                 </div>
             </div>
 
-            <Modal show={confirmingUserEdition} onClose={closeModal} closeable={false} maxWidth={'2xl'}>
+            <Modal show={confirmingUserEdition} onClose={closeModal} closeable={false}>
                 <div className="p-6">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 uppercase">
                         {user?.name}
                     </h2>
-                    {!permissionAvaliable?.length ? null :
-                        <div className="flex p-2">
-                            <div className="flex-1">
+                    <div className='flex-col w-80 sm:w-full'>
+                        {!permissionAvaliable?.length ? null :
+                            <div>
                                 <span className='mt-4 uppercase text-xs text-gray-300'>Vincular Permissões</span>
                                 <div className="bg-gray-700 p-2 rounded-lg mt-2 space-y-1">
                                     {permissionAvaliable?.map(({ name, id }) => (
-                                        <div className="flex items-center max-w-xs justify-between">
-                                            <span key={id} className="uppercase text-xs text-gray-300">{name}</span>
+                                        <div key={id} className="flex items-center max-w-xs justify-between">
+                                            <span className="uppercase text-xs text-gray-300">{name}</span>
                                             <Link href={route('permission-user-atach', [user?.id, id])} preserveState>
                                                 <PrimaryButton
                                                     onClick={closeModal}
@@ -129,17 +129,14 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
                                     ))}
                                 </div>
                             </div>
-                        </div>
-                    }
-                    {!user?.permissions?.length ? null :
-                        <div className="flex p-2 mt-2">
-                            <div className="flex-1">
-                                <InputLabel htmlFor="stanley" value="stanley" className="sr-only" />
+                        }
+                        {!user?.permissions?.length ? null :
+                            <div>
                                 <span className='mt-4 uppercase text-xs text-gray-300'>desvincular permissões</span>
                                 <div className="bg-gray-700 p-2 rounded-lg mt-2 space-y-1">
                                     {user?.permissions?.map(({ name, id }) => (
-                                        <div className="flex items-center max-w-xs justify-between">
-                                            <span key={id} className="uppercase text-xs text-gray-300">{name}</span>
+                                        <div key={id} className="flex items-center max-w-xs justify-between">
+                                            <span className="uppercase text-xs text-gray-300">{name}</span>
                                             <Link href={route('permission-user', [user.id, id])} preserveState>
                                                 <DangerButton
                                                     onClick={closeModal}
@@ -153,9 +150,9 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
                                     ))}
                                 </div>
                             </div>
-                        </div>
-                    }
+                        }
 
+                    </div>
                     <div className="mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>Cancelar</SecondaryButton>
                     </div>
