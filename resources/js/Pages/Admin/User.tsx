@@ -20,13 +20,10 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
         if (flash.attach) {
           toast.success(flash.attach)
         }
-      }, [flash.attach])
-
-    useEffect(() => {
         if (flash.detach) {
-          toast.error(flash.detach)
-        }
-      }, [flash.detach])
+            toast.error(flash.detach)
+          }
+      }, [flash])
 
     const confirmUserEdition = (id: number) => {
         const findUser = users.data?.find((user) => user.id === id)
