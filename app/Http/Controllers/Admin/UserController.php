@@ -11,12 +11,15 @@ class UserController extends Controller
 {
     public function __construct(
         public User $user,
-    )
-    { }
+    ) {
+    }
 
     public function index()
     {
-        $users = $this->user->with('permissions:id,name')->paginate(10);
+        $users = $this->user->with('permissions:id,name')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
         $permissions = Permission::all(['id', 'name']);
 
         return Inertia::render('Admin/User', [

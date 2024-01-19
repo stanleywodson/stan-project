@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->permissions()->where('name', $permission)->exists();
     }
+
+    public function countUserWithoutPermission(): int
+    {
+        return $this->whereDoesntHave('permissions')->count();
+    }
 }

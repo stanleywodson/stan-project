@@ -1,9 +1,8 @@
 import { useState, PropsWithChildren, ReactNode } from 'react';
 import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { PageProps, User } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
+import { User } from '@/types';
+import { Link } from '@inertiajs/react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { UserList as UsersIcon } from '@phosphor-icons/react';
 import { Sidebar } from '@/Components/Sidebar';
