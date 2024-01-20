@@ -9,14 +9,10 @@ use App\Providers\RouteServiceProvider;
 
 class PainelPermission
 {
-    public function __construct(
-        public User $user,
-    ) {
-    }
 
-    public function painelByPermissionUser()
+    public static function painelByPermissionUser()
     {
-        $permissions = $this->user->permissions;
+        $permissions = auth()->user()->permissions;
         if (count($permissions) > 0) {
             $permission = $permissions[0]['name'];
         } else {

@@ -35,10 +35,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $user = auth()->user();
-        $painel = new PainelPermission($user);
-
-        return redirect()->intended($painel->painelByPermissionUser());
+        return redirect()->intended(PainelPermission::painelByPermissionUser());
         // return redirect()->intended(RouteServiceProvider::HOME);
     }
 

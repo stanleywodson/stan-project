@@ -11,6 +11,7 @@ export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
+        cpf: '',
         password: '',
         password_confirmation: '',
     });
@@ -28,7 +29,7 @@ export default function Register() {
     };
 
     return (
-        <GuestLargeLayout>
+        <>
             <Head title="Cadastrar" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -67,6 +68,22 @@ export default function Register() {
                                     />
 
                                     <InputError message={errors.email} className="mt-2" />
+                                </div>
+
+                                <div className="mt-4">
+                                    <InputLabel htmlFor="cpf" value="Cpf" />
+
+                                    <TextInput
+                                        id="cpf"
+                                        type="text"
+                                        name="cpf"
+                                        value={data.cpf}
+                                        className="mt-1 block w-full"
+                                        onChange={(e) => setData('cpf', e.target.value)}
+                                        required
+                                    />
+
+                                    <InputError message={errors.cpf} className="mt-2" />
                                 </div>
 
                                 <div className="mt-4">
@@ -117,6 +134,6 @@ export default function Register() {
                     </div>
                 </div>
             </div>
-        </GuestLargeLayout>
+        </>
     );
 }
