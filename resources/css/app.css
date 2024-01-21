@@ -5,3 +5,12 @@
 body {
     -webkit-font-smoothing: antialiased;
 }
+
+  #permissionName::after {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    display: inline-block; /* Garante que o elemento tenha uma largura e altura definidas */
+    margin-left: 5px; /* Ajuste o valor conforme necessário para a posição desejada */
+}

@@ -73,7 +73,7 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
                                 </tr>
                             </thead>
                             <tbody>
-                                {users.data?.map(({ name, email, id, permissions }) => {
+                                {users.data?.map(({ name, email, id, status, permissions }) => {
                                     return id === 1 ? '' :
                                         <tr key={id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -85,16 +85,22 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
                                             <td className="px-6 py-4 flex-col gap-1 inline-flex">
                                                 {!permissions?.length && <span className="text-center">-</span>}
                                                 {permissions?.map(({ name, id }) => (
-                                                    // <span className="bg-gray-100 text-gray-800 font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300 uppercase text-xs">{name}</span>
                                                     <span key={id} className="uppercase text-xs">{name}</span>
                                                 ))}
                                             </td>
                                             <td className="px-6 py-4">
-                                                <span className="uppercase text-xs">ativo</span>
+                                                {!status && <span className="text-center">-</span>}
+                                                <span id="permissionName" className={
+                                                    `uppercase text-xs
+                                                    ${status === 'active' ? 'after:bg-green-600' : ''}
+                                                    ${status === 'pending' ? 'after:bg-orange-500' : ''}
+                                                    ${status === 'disabled' ? 'after:bg-red-600' : ''}
+                                                    `}>
+                                                    {/* {status} */}
+                                                </span>
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                                    {/* <Link href={route('users.show', [id])} > Editar</Link> */}
                                                     <span onClick={() => confirmUserEdition(id)}>Editar</span>
 
                                                 </div>
