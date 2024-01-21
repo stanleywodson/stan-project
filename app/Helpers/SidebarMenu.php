@@ -26,7 +26,7 @@ class SidebarMenu
                                 'icon' => 'users'
                             ],
                             [
-                                'label' => 'Permissões de Usuário',
+                                'label' => 'Permissões',
                                 'url' => 'users.index',
                                 'icon' => 'users'
                             ],

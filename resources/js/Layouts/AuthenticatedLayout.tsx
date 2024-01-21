@@ -2,8 +2,6 @@ import { useState, PropsWithChildren, ReactNode } from 'react';
 import Dropdown from '@/Components/Dropdown';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { User } from '@/types';
-import { Link } from '@inertiajs/react';
-import ApplicationLogo from '@/Components/ApplicationLogo';
 import { UserList as UsersIcon } from '@phosphor-icons/react';
 import { Sidebar } from '@/Components/Sidebar';
 import LogoWhite from '../../images/svg/white.svg'
@@ -20,7 +18,7 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
-                            <img src={LogoWhite} alt="Amor Mairo Logo" className=' bg-gray-500 w-14 p-1 rounded-md ' />
+                                <img src={LogoWhite} alt="Amor Mairo Logo" className=' bg-gray-500 w-14 p-1 rounded-md ' />
                             </div>
                         </div>
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
@@ -113,7 +111,9 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                     </div>
                 </div>
             </nav>
-            <Sidebar />
+            {user.status === 'active' &&
+                <Sidebar />
+            }
             <div className="p-4 sm:ml-64">
                 <div className="p-4 border-gray-200 dark:border-gray-700 mt-14">
                     <main>{children}</main>

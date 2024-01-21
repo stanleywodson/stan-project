@@ -20,11 +20,11 @@ export const Sidebar = () => {
 
                                             <NavLink href={route(url)} active={route().current(url)} >
                                                 <div className="flex items-center">
-                                                    {label === "Permissões de Usuário" && auth.countUserWithoutPermission ?
+                                                    {label === "Permissões" && auth.countUserWithoutPermission ?
                                                         <>
                                                             {label}
                                                             <span
-                                                                className="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-gray-200">
+                                                                className="bg-red-100 ml-4 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-gray-200">
                                                                 {auth.countUserWithoutPermission}
                                                             </span>
                                                         </> :
