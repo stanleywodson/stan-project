@@ -42,13 +42,20 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::middleware('can:leader')->group(function () {
         Route::get('leader', function () {
-            return Inertia::render('Admin/Leader');
+            return Inertia::render('Leader/Leader');
         })->name('leader.index');
+    });
+
+    //Page - WordCell ----> Vai ser criado o controller CelulaController
+    Route::middleware('can:admin')->group(function () {
+        Route::get('word-cell', function () {
+            return Inertia::render('Admin/CellWord');
+        })->name('word.cell');
     });
 
     //Page - WithOutPermission
     Route::get('without-permission', function () {
-        return Inertia::render('Admin/WithoutPermission');
+        return Inertia::render('WithoutPermission');
     })->name('withoutpermission');
 });
 

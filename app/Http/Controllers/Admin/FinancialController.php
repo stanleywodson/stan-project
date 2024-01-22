@@ -13,7 +13,7 @@ class FinancialController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/Financial');
+        return Inertia::render('Financial/Financial');
     }
 
     /**

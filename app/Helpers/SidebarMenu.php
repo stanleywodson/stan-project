@@ -36,9 +36,9 @@ class SidebarMenu
                                 'icon' => 'users'
                             ],
                             [
-                                'label' => 'Financeiro',
-                                'url' => 'financial.index',
-                                'icon' => 'financial'
+                                'label' => 'Palavra de Célula',
+                                'url' => 'word.cell',
+                                'icon' => ''
                             ],
                         ],
                     ]
