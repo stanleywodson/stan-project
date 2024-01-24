@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
-import { Head, Link } from '@inertiajs/react'
+import { Head, Link, router } from '@inertiajs/react'
 import { PageProps, Permissions, UserData } from '@/types'
 import { Paginate } from '@/Components/Paginate'
 import SecondaryButton from '@/Components/SecondaryButton'
@@ -9,13 +9,25 @@ import DangerButton from '@/Components/DangerButton'
 import PrimaryButton from '@/Components/PrimaryButton'
 import { toast, ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
+import { MagnifyingGlass } from '@phosphor-icons/react'
 
-export default function User({ auth, users, permissions, flash }: PageProps<{ permissions: Permissions[] }>) {
+export default function User({ auth, users, permissions, flash, resultSearch }: PageProps<{ permissions: Permissions[], resultSearch: string }>) {
     const [confirmingUserEdition, setconfirmingUserEdition] = useState(false)
     const [user, setUser] = useState<UserData>()
+    const [search, setSearch] = useState(resultSearch)
     const [permissionAvaliable, setPermissionAvaliable] = useState<Permissions[]>()
 
-    const permissionWithOutAdmin = permissions.filter(({ id }) => id !== 1)
+    const permissionWithOutAdmin = permissions.filter(({ name }) => name !== 'admin')
+    const getData = () => {
+        router.get('users',
+            { search },
+            { preserveState: true, replace: true })
+    }
+
+    const handleSearch = (e: any) => {
+        e.preventDefault()
+        getData()
+    }
 
     useEffect(() => {
         if (flash.attach) {
@@ -50,10 +62,44 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
             <Head title="Permissões" />
             <div className="mt-2">
                 <div className="max-w-8xl mx-auto">
-                    <div className="relative overflow-x-auto shadow-sm mt-4">
+                    <div className="flex flex-col sm:flex-row  items-center">
+
+                            <form onSubmit={handleSearch} className="flex w-full sm:flex-1 gap-2 items-center mb-6">
+                                <input type="text"
+                                    className="w-full sm:w-1/4 rounded-lg text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Buscar..."
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                />
+                                    {/* <PrimaryButton ><MagnifyingGlass size={19}  /></PrimaryButton> */}
+                            </form>
+                        {/* <div className='flex w-full flex-row gap-2 sm:w-1/3'>
+                            <select
+                                className="block w-full rounded-lg p-2 mb-6 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected>Status</option>
+                                <option value="US">United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="FR">France</option>
+                                <option value="DE">Germany</option>
+                            </select>
+
+
+                            <select
+                                className="block w-full rounded-lg p-2 mb-6 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected>Permissão</option>
+                                <option value="US">United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="FR">France</option>
+                                <option value="DE">Germany</option>
+                            </select>
+                        </div> */}
+                    </div>
+
+                    <div className="relative rounded-lg overflow-x-auto shadow-sm">
                         <ToastContainer />
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <thead
+                                className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" className="px-6 py-3">
                                         nome
@@ -75,8 +121,10 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
                             <tbody>
                                 {users.data?.map(({ name, email, id, status, permissions }) => {
                                     return id === 1 ? '' :
-                                        <tr key={id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <tr key={id}
+                                            className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                            <th scope="row"
+                                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 {name}
                                             </th>
                                             <td className="px-6 py-4">
@@ -100,7 +148,8 @@ export default function User({ auth, users, permissions, flash }: PageProps<{ pe
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                                <div
+                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                                     <span onClick={() => confirmUserEdition(id)}>Editar</span>
 
                                                 </div>
