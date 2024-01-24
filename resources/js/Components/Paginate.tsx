@@ -1,5 +1,6 @@
 import { Links } from "@/types"
 import { Link } from "@inertiajs/react"
+import { LinuxLogo } from "@phosphor-icons/react"
 import React from "react"
 
 export const Paginate = (props: { data: Links[] }) => {
