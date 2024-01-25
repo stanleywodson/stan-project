@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class UserController extends Controller
 {
@@ -15,7 +16,7 @@ class UserController extends Controller
         public User $user,
     ) { }
 
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $users = $this->user->search($request->search)
             ->query(fn (Builder $query) => $query->with('permissions:id,name'))
