@@ -27,7 +27,6 @@
     "dependencies": {
         "@phosphor-icons/react": "^2.0.15",
         "jodit-react": "^4.0.9",
-        "lodash": "^4.17.21",
         "react-toastify": "^10.0.3"
     }
 }
