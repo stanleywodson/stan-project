@@ -17,7 +17,7 @@ class Permission extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public static function getPermissionsName(User $user)
+    public static function getPermissionsName(User $user): array
     {
         $permissions = [];
         foreach ($user->permissions as $permission) {
