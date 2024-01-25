@@ -3,7 +3,7 @@ import Dropdown from '@/Components/Dropdown';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { User } from '@/types';
 import { UserList as UsersIcon } from '@phosphor-icons/react';
-import { Sidebar } from '@/Components/Sidebar';
+import Sidebar from '@/Components/Sidebar';
 import LogoWhite from '../../images/svg/white.svg'
 import LogoWhite2 from '../../images/svg/white2.svg'
 import LogoBlack from '../../images/svg/black.svg'

@@ -2,7 +2,7 @@ import { PageProps } from "@/types"
 import { usePage } from "@inertiajs/react"
 import NavLink from "./NavLink"
 
-export const Sidebar = () => {
+export default function Sidebar(){
     const { sidebarMenus, auth } = usePage<PageProps>().props
 
     return (

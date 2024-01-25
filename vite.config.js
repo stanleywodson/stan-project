@@ -12,11 +12,11 @@ export default defineConfig({
 	],
 	watch: {
 		usePolling: true,
-		origin: 'http://localhost'
+		origin: 'http://167.172.245.192'
 	},
 	server: {
 		hmr: {
-			host: 'localhost'
+			host: '167.172.245.192'
 		},
 		host: true,
 		port: 3000,
