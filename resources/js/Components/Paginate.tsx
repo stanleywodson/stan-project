@@ -1,9 +1,9 @@
 import { Links } from "@/types"
 import { Link } from "@inertiajs/react"
-import { LinuxLogo } from "@phosphor-icons/react"
 import React from "react"
 
 export const Paginate = (props: { data: Links[] }) => {
+
     return (
         <nav className="flex items-center flex-column flex-wrap md:flex-row pt-4 justify-end" aria-label="Table navigation">
             <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 mb-2">

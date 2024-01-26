@@ -52,6 +52,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     users: {
         data: UserData[]
         links: Links[]
+        last_page: number
     }
 
     flash: {
