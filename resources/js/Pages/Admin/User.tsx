@@ -19,8 +19,6 @@ export default function User({ auth, users, permissions, flash, resultSearch }: 
 	const searchRef = useRef<HTMLInputElement>(resultSearch)
 	const [permissionAvaliable, setPermissionAvaliable] = useState<Permissions[]>()
 
-	console.log(resultSearch)
-
 	const permissionWithOutAdmin = permissions.filter(({ name }) => name !== 'admin')
 	const getData = () => {
 		router.get('users',
@@ -138,7 +136,9 @@ export default function User({ auth, users, permissions, flash, resultSearch }: 
 								})}
 							</tbody>
 						</table>
+                        {users.last_page === 1 ? '' :
 						<Paginate data={users.links} />
+                        }
 					</div>
 				</div>
 			</div>
