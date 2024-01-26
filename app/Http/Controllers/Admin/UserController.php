@@ -14,17 +14,18 @@ class UserController extends Controller
 {
     public function __construct(
         public User $user,
-    ) { }
+    ) {
+    }
 
     public function index(Request $request): Response
     {
-        // $users = $this->user->search($request->search)
-        //     ->query(fn (Builder $query) => $query->with('permissions:id,name'))
-        //     ->orderBy('created_at', 'desc')
-        //     ->paginate(5)
-        //     ->appends('query', null)->withQueryString();
+        $users = $this->user->search($request->search)
+            ->query(fn (Builder $query) => $query->with('permissions:id,name'))
+            ->orderBy('created_at', 'desc')
+            ->paginate(5)
+            ->appends('query', null)->withQueryString();
 
-        $users = $this->user->with('permissions')->paginate(5);
+        // $users = $this->user->with('permissions')->paginate(5);
 
         $permissions = Permission::all(['id', 'name']);
 

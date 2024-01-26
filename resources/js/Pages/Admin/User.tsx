@@ -101,7 +101,7 @@ export default function User({ auth, users, permissions, flash, resultSearch }: 
 							</thead>
 							<tbody>
 								{users.data?.map(({ name, email, id, status, permissions }) => {
-									return id === 1 ? '' :
+									return id === auth.user.id ? '' :
 										<tr key={id}
 											className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 											<th scope="row"
