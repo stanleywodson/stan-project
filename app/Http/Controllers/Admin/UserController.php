@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function index(Request $request): Response
     {
-        $users = $this->user->search($request->search)
+        $users = User::search($request->search)
             ->query(fn (Builder $query) => $query->with('permissions:id,name'))
             ->orderBy('created_at', 'desc')
             ->paginate(5)
