@@ -1,17 +1,11 @@
-import React, { useState, useRef } from 'react';
 import JoditEditor from 'jodit-react';
 
-export const Editor = () => {
-	const editor = useRef(null);
-	const [content, setContent] = useState('');
-
+export const Editor = (props: any) => {
 	return (
-		<div className=''>
+		<>
 			<JoditEditor
-				ref={editor}
-				value={content}
-				onBlur={newContent => setContent(newContent)}
-				// onBlur={() => alert('stanley wodson')}
+                value={props.editor}
+                onBlur={(editor) => props.setEditor('editor', editor)}
 				config={{
 					readonly: false,
 					toolbar: true,
@@ -19,7 +13,7 @@ export const Editor = () => {
                     language: 'pt-BR',
 				}}
 			/>
-		</div>
+		</>
 	)
 
 };
