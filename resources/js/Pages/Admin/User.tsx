@@ -69,17 +69,26 @@ export default function User({auth, users, permissions, flash, resultSearch}: Pa
             <div className="mt-2">
                 <div className="max-w-8xl mx-auto">
                     <InputLabel className='uppercase text-xs tracking-widest font-thin' value='Pesquisar'/>
-                    <div className="flex flex-col mt-1 sm:flex-row  items-center">
-                        <form onSubmit={handleSearch} className="flex w-full sm:flex-1 gap-2 items-center mb-6">
-
+                    <form onSubmit={handleSearch} className="w-full gap-2 items-center mb-6 mt-1">
+                        <div className="relative">
+                            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     strokeWidth={1.5}
+                                     stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                          d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+                                </svg>
+                            </div>
                             <input type="text"
-                                className="w-full sm:max-w-xl rounded-lg text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                   placeholder="Buscar..."
+                                   className="block w-full sm:max-w-xl ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   placeholder="Nome / Status..."
                                    value={search}
                                    onChange={(e) => setSearch(e.target.value)}
                             />
-                        </form>
-                    </div>
+                        </div>
+
+                    </form>
 
                     <div className="relative rounded-lg overflow-x-auto shadow-sm">
                         <ToastContainer/>
