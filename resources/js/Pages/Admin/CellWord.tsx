@@ -1,14 +1,14 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import {Head, useForm} from '@inertiajs/react';
-import {PageProps} from '@/types';
-import {Editor} from '@/Components/Editor';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import InputError from '@/Components/InputError';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
+import {Head, useForm} from '@inertiajs/react'
+import {PageProps} from '@/types'
+import {Editor} from '@/Components/Editor'
+import InputLabel from '@/Components/InputLabel'
+import PrimaryButton from '@/Components/PrimaryButton'
+import InputError from '@/Components/InputError'
 import React from "react";
 
 export default function CellWord({auth}: PageProps) {
-    const {data, setData, reset, errors,} = useForm({title: '', editor: '',})
+    const {data, setData, reset, errors,} = useForm({title: '', editor: ''})
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

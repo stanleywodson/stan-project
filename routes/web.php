@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\{
     PermissionUserController,
     UserController
 };
+use App\Http\Controllers\Cell\WordcellController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Site\SiteController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     //Financial
     Route::resource('/financial', FinancialController::class)->middleware('can:financial');
 
+    //WordCell
+    Route::resource('/wordcell', WordcellController::class);
+
     Route::middleware('can:admin')->group(function () {
         //Users
         Route::get('users', [UserController::class, 'index'])->name('users.index');
@@ -39,6 +43,8 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         Route::get('permission-user-atach/{user}/{permission}', [PermissionUserController::class, 'attachPermissionProfile'])
             ->name('permission-user-atach');
     });
+
+
 
     Route::middleware('can:leader')->group(function () {
         Route::get('leader', function () {
