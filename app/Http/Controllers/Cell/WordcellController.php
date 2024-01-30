@@ -13,7 +13,9 @@ class WordcellController extends Controller
     public function index()
     {
         return Inertia::render('Admin/CellWord', [
-            'wordcells' => Wordcell::orderBy('sketch', 'desc')->paginate(5),
+            'wordcells' => Wordcell::orderBy('sketch', 'desc')
+                ->orderBy('updated_at', 'desc')
+                ->paginate(5),
         ]);
     }
 
@@ -57,7 +59,7 @@ class WordcellController extends Controller
     {
         dd('showww');
         return Inertia::render('Admin/CellWord', [
-           'wordcell' => Wordcell::find($id),
+            'wordcell' => Wordcell::find($id),
         ]);
     }
 
