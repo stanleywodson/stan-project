@@ -4,7 +4,7 @@ import {PageProps, Permissions, UserData} from '@/types'
 import {Paginate} from '@/Components/Paginate'
 import SecondaryButton from '@/Components/SecondaryButton'
 import Modal from '@/Components/Modal'
-import {useEffect, useState} from 'react'
+import {FormEventHandler, useEffect, useState} from 'react'
 import DangerButton from '@/Components/DangerButton'
 import PrimaryButton from '@/Components/PrimaryButton'
 import {toast, ToastContainer} from 'react-toastify'
@@ -29,11 +29,10 @@ export default function User({auth, users, permissions, flash, resultSearch}: Pa
             {preserveState: true, replace: true})
     }
 
-    const handleSearch = (e: { preventDefault: () => void }) => {
+    const handleSearch: FormEventHandler = (e) => {
         e.preventDefault()
         getData()
     }
-
 
     useEffect(() => {
         if (flash.attach) {

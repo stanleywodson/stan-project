@@ -3,16 +3,20 @@
 namespace App\Http\Controllers\Cell;
 
 use App\Http\Controllers\Controller;
+use App\Models\Wordcell;
+use Doctrine\Inflector\Rules\Word;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class WordcellController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return Inertia::render('Admin/CellWord', [
+            'wordcells' => Wordcell::orderBy('sketch', 'desc')
+                ->orderBy('updated_at', 'desc')
+                ->paginate(5),
+        ]);
     }
 
     /**
@@ -28,7 +32,24 @@ class WordcellController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|min:3|max:255',
+            'body' => 'required|string',
+            'sketch' => 'boolean'
+        ]);
+
+        Wordcell::updateOrCreate(
+            ['id' => $request->id],
+            [
+                'title' => $request->title,
+                'body' => $request->body,
+                'sketch' => $request->sketch,
+            ]
+        );
+
+        return redirect()
+            ->route('wordcell.index')
+            ->with('successWordcell', 'Palavra de Célula registrada com sucesso!');
     }
 
     /**
@@ -36,7 +57,10 @@ class WordcellController extends Controller
      */
     public function show(string $id)
     {
-        //
+        dd('showww');
+        return Inertia::render('Admin/CellWord', [
+            'wordcell' => Wordcell::find($id),
+        ]);
     }
 
     /**
@@ -60,6 +84,7 @@ class WordcellController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Wordcell::destroy($id);
+        return redirect()->route('wordcell.index')->with('successWordcell', 'Palavra de Célula deletada com sucesso!');
     }
 }
