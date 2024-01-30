@@ -37,7 +37,7 @@ class SidebarMenu
                             ],
                             [
                                 'label' => 'Palavra de Célula',
-                                'url' => 'word.cell',
+                                'url' => 'wordcell.index',
                                 'icon' => ''
                             ],
                         ],

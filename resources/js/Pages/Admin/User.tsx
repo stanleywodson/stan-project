@@ -34,7 +34,6 @@ export default function User({auth, users, permissions, flash, resultSearch}: Pa
         getData()
     }
 
-
     useEffect(() => {
         if (flash.attach) {
             toast.success(flash.attach)

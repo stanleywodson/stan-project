@@ -8,10 +8,13 @@ use App\Http\Controllers\Admin\{
 use App\Http\Controllers\Cell\WordcellController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Site\SiteController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/test', fn () => 'test')->name('test');
+Route::post('admin/test', function(Request $request) {
+    dd($request->title);
+})->name('test');
 Route::get('/', SiteController::class)->name('home');
 
 Route::get('/admin/dashboard', function () {
@@ -52,12 +55,6 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         })->name('leader.index');
     });
 
-    //Page - WordCell ----> Vai ser criado o controller CelulaController
-    Route::middleware('can:admin')->group(function () {
-        Route::get('word-cell', function () {
-            return Inertia::render('Admin/CellWord');
-        })->name('word.cell');
-    });
 
     //Page - WithOutPermission
     Route::get('without-permission', function () {
