@@ -66,6 +66,15 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
         router.delete(`wordcell/${idWordcell}`)
         setIdWordcell('')
         setconfirmingUserEdition(false)
+        setOnlyView(false)
+        setWordcell({
+            id: '',
+            title: '',
+            body: '',
+            sketch: false,
+            created_at: '',
+        })
+        reset()
     }
 
     const filterEditWordcell = (id: string, title: string, body: string, action?: boolean) => {
@@ -120,7 +129,6 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
                                 required
                             />
                             <InputError message={errors.title} className="mt-2" />
-                            {errors.title && <span>This field is required</span>}
                         </div>
                         <div className="mt-6 space-y-2">
                             <Editor setEditor={setValue} readonly={onlyView} content={wordcell?.body} />
@@ -224,8 +232,8 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
                         <div className="mt-6 flex justify-end">
                             <SecondaryButton onClick={closeModalSave}>Cancelar</SecondaryButton>
 
-                            <PrimaryButton className="ms-3 dark:bg-green-600 dark:text-white dark:focus:bg-green-500  dark:hover:bg-green-500">
-                                Salvar
+                            <PrimaryButton className="ms-3 dark:bg-green-700 dark:text-white dark:focus:bg-green-600  dark:hover:bg-green-600">
+                                Salvar e enviar
                             </PrimaryButton>
                         </div>
                     </form>
