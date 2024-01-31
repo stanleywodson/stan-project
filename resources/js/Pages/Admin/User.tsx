@@ -95,21 +95,11 @@ export default function User({auth, users, permissions, flash, resultSearch}: Pa
                             <thead
                                 className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" className="px-6 py-3">
-                                    nome
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    email
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    permissão
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    status
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Editar
-                                </th>
+                                <th scope="col" className="px-6 py-3">nome</th>
+                                <th scope="col" className="px-6 py-3">email</th>
+                                <th scope="col" className="px-6 py-3">permissão</th>
+                                <th scope="col" className="px-6 py-3">status</th>
+                                <th scope="col" className="px-6 py-3">Editar</th>
                             </tr>
                             </thead>
                             <tbody>
