@@ -13,13 +13,14 @@ import { Trash, Eye, PencilLine } from '@phosphor-icons/react'
 import Modal from '@/Components/Modal'
 import DangerButton from '@/Components/DangerButton'
 import SecondaryButton from '@/Components/SecondaryButton'
+import InputError from '@/Components/InputError'
 
-interface WordCellData {
+type WordCellData = {
     id: string
     title: string
     body: string
     sketch: boolean
-    created_at: string
+    created_at?: string
 }
 
 type WordCell<T extends Record<string, unknown> = Record<string, unknown>> = T & {
@@ -28,13 +29,14 @@ type WordCell<T extends Record<string, unknown> = Record<string, unknown>> = T &
 }
 
 export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
-    errors: { title: string }, wordcells: WordCell
+    errors: { title: string, body: string }, wordcells: WordCell
 }>) {
     const [wordcell, setWordcell] = useState<WordCellData>()
     const [confirmingUserEdition, setconfirmingUserEdition] = useState(false)
+    const [confirmingSaving, setconfirmingSaving] = useState(false)
     const [idWordcell, setIdWordcell] = useState('')
     const [onlyView, setOnlyView] = useState(false)
-    const { handleSubmit, setValue, reset, register } = useForm({
+    const { handleSubmit, setValue, reset, register } = useForm<WordCellData>({
         defaultValues: {
             'id': '',
             'title': '',
@@ -46,10 +48,17 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
     const isNotPageable = 1
 
     const closeModal = () => setconfirmingUserEdition(false)
+    const closeModalSave = () => setconfirmingSaving(false)
 
     const showDeleteModal = (id: string) => {
         setIdWordcell(id)
         setconfirmingUserEdition(true)
+    }
+
+    const showSaveModal: FormEventHandler = (e) => {
+        e.preventDefault()
+        setconfirmingSaving(true)
+        setValue('sketch', false)
     }
 
     const handleSubmitDelete: FormEventHandler = (e) => {
@@ -60,10 +69,6 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
     }
 
     const filterEditWordcell = (id: string, title: string, body: string, action?: boolean) => {
-        console.log('kkk', id);
-        console.log('bbb', title);
-        console.log('ccc', body);
-
         const wordcell = wordcells.data.find((item) => item.id === id)
         //vão ser renderizados na tela
         setValue('id', id)
@@ -79,9 +84,13 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
         setOnlyView(false)
 
     }
-    // vou conseguir pegar a tipagem pelo objeto do useform
-    const onSubmit = (data: any) => {
+
+    const onSubmit = (data: WordCellData) => {
         router.post('wordcell', data)
+
+        if (!data.sketch)
+            setconfirmingSaving(false)
+
         setWordcell({
             id: '',
             title: '',
@@ -92,12 +101,6 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
         reset()
     }
 
-    useEffect(() => {
-        if (flash.wordcellMessage) {
-            toast.success(flash.wordcellMessage)
-        }
-    }, [flash])
-
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -106,7 +109,6 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
             <Head title="Pal. Célula" />
             <div className="mt-2">
                 <div className="max-w-8xl mx-auto">
-                    <ToastContainer />
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="space-y-2">
                             <InputLabel className='uppercase text-xs tracking-widest font-thin' value='Titulo' />
@@ -114,17 +116,23 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
                                 className="w-full sm:max-w-xl rounded-lg text-sm text-gray-900 border border-gray-300 bg-gray-50 disabled:opacity-50  focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Digite um titulo para a palavra de célula..."
                                 disabled={onlyView}
-                                {...register('title')}
+                                {...register('title', { required: true })}
                                 required
                             />
+                            <InputError message={errors.title} className="mt-2" />
+                            {errors.title && <span>This field is required</span>}
                         </div>
                         <div className="mt-6 space-y-2">
                             <Editor setEditor={setValue} readonly={onlyView} content={wordcell?.body} />
+                            <InputError message={errors.body} className="mt-2" />
+
                         </div>
                         {!onlyView ?
                             <div className='flex-col sm:space-x-2 sm:flex sm:flex-row sm:justify-end'>
-                                <PrimaryButton onClick={() => setValue('sketch', true)} className='w-full sm:w-auto mt-4 dark:bg-gray-600 dark:text-white dark:font-thin hover:dark:bg-gray-500 dark:focus:bg-gray-600'>Salvar como rascunho</PrimaryButton>
-                                <PrimaryButton onClick={() => setValue('sketch', false)} className='w-full sm:w-auto mt-4'>Salvar e enviar</PrimaryButton>
+                                {/* <PrimaryButton onClick={() => setValue('sketch', true)} className='w-full sm:w-auto mt-4'>Salvar como rascunho</PrimaryButton> */}
+                                {/* <PrimaryButton onClick={() => setValue('sketch', false)} className='w-full sm:w-auto mt-4'>Salvar e enviar</PrimaryButton> */}
+                                <SecondaryButton type='submit' className='w-full sm:w-auto mt-4' onClick={() => setValue('sketch', true)}>Salvar como rascunho</SecondaryButton>
+                                <PrimaryButton onClick={showSaveModal} className='w-full sm:w-auto mt-4'>Salvar e enviar</PrimaryButton>
                             </div>
                             : <div className='h-[50px]'>
                                 <span className='text-gray-900'>...</span>
@@ -170,7 +178,7 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
                                                 }
                                                 <span className='cursor-pointer'
                                                     onClick={() => showDeleteModal(id)}><Trash size={19}
-                                                        className='text-red-600 hover:text-red-400 rounded-sm'/>
+                                                        className='text-red-600 hover:text-red-400 rounded-sm' />
                                                 </span>
                                             </div>
                                         </td>
@@ -199,6 +207,26 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
                             <DangerButton className="ms-3">
                                 Deletar
                             </DangerButton>
+                        </div>
+                    </form>
+                </Modal>
+
+                <Modal maxWidth={'md'} show={confirmingSaving} onClose={closeModalSave}>
+                    <form onSubmit={handleSubmit(onSubmit)} className="p-6">
+                        <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                            Tem certeza que deseja salvar e enviar?
+                        </h2>
+
+                        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                            A palavra de "célula" será enviada para o líder, é não poderá mais ser alterada.
+                        </p>
+
+                        <div className="mt-6 flex justify-end">
+                            <SecondaryButton onClick={closeModalSave}>Cancelar</SecondaryButton>
+
+                            <PrimaryButton className="ms-3 dark:bg-green-600 dark:text-white dark:focus:bg-green-500  dark:hover:bg-green-500">
+                                Salvar
+                            </PrimaryButton>
                         </div>
                     </form>
                 </Modal>

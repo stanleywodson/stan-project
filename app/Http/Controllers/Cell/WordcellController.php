@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Cell;
 
 use App\Http\Controllers\Controller;
 use App\Models\Wordcell;
-use Doctrine\Inflector\Rules\Word;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -38,7 +37,7 @@ class WordcellController extends Controller
             'sketch' => 'boolean'
         ]);
 
-        Wordcell::updateOrCreate(
+        $wordcell = Wordcell::updateOrCreate(
             ['id' => $request->id],
             [
                 'title' => $request->title,
@@ -85,6 +84,8 @@ class WordcellController extends Controller
     public function destroy(string $id)
     {
         Wordcell::destroy($id);
-        return redirect()->route('wordcell.index')->with('successWordcell', 'Palavra de Célula deletada com sucesso!');
+        return redirect()
+            ->route('wordcell.index')
+            ->with('successWordcell', 'Palavra de Célula deletada com sucesso!');
     }
 }

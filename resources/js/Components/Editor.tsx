@@ -14,9 +14,15 @@ export const Editor = ({ setEditor, readonly, content = '' }: EditorProps) => {
                 config={{
                     readonly,
                     toolbar: true,
-                    height: '300px',
+                    // height: '300px',
                     language: 'pt-BR',
+                    placeholder: 'Digite aqui...',
+                    style: {
+                        'background-color': '#f4f4f5',
+                    },
+
                 }}
+
             />
         </>
     )
