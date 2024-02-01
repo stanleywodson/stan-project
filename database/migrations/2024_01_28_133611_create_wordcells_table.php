@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('wordcells', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('body');
+            $table->longText('body');
             $table->boolean('sketch');
             $table->timestamps();
         });

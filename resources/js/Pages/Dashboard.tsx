@@ -1,39 +1,157 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import { PageProps } from '@/types';
+// src/CadastroForm.js
+import React, { useState } from 'react';
 
-export default function Dashboard({ auth }: PageProps) {
-    return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Painel</h2>}
-        >
-            <Head title="Dashboard" />
+const CadastroForm = () => {
+  const [dadosPessoais, setDadosPessoais] = useState({
+    nome: '',
+    email: '',
+    telefone: '',
+  });
 
-            <div className="mt-2">
-                <div className="max-w-8xl mx-auto">
-                    <div className="flex flex-col rounded-lg sm:flex-row sm:justify-around sm:px-6 lg:px-8 p-4 sm:p-8 bg-white dark:bg-gray-800 shadow">
-                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm mb-4">
-                            <div className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-yellow-500 dark:border-gray-700">
-                                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-200">Células</h5>
-                                <p className="font-normal text-gray-700 dark:text-gray-200">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-                            </div>
-                        </div>
-                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm mb-4">
-                            <div className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Líderes</h5>
-                                <p className="font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-                            </div>
-                        </div>
-                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm">
-                            <div className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Financeiro</h5>
-                                <p className="font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </AuthenticatedLayout>
-    );
-}
+  const [endereco, setEndereco] = useState({
+    rua: '',
+    cidade: '',
+    estado: '',
+    cep: '',
+  });
+
+  const handleChangeDadosPessoais = (e) => {
+    const { name, value } = e.target;
+    setDadosPessoais((prevDados) => ({
+      ...prevDados,
+      [name]: value,
+    }));
+  };
+
+  const handleChangeEndereco = (e) => {
+    const { name, value } = e.target;
+    setEndereco((prevEndereco) => ({
+      ...prevEndereco,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Aqui você pode realizar a lógica para enviar os dados para o backend, por exemplo.
+    console.log('Dados Pessoais:', dadosPessoais);
+    console.log('Endereço:', endereco);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8 p-4 bg-white rounded shadow-md">
+      <h2 className="text-2xl font-bold mb-4">Cadastro Pessoal</h2>
+
+      {/* Dados Pessoais */}
+      <div className="mb-4">
+        <label htmlFor="nome" className="block text-sm font-semibold text-gray-600">
+          Nome:
+        </label>
+        <input
+          type="text"
+          id="nome"
+          name="nome"
+          value={dadosPessoais.nome}
+          onChange={handleChangeDadosPessoais}
+          className="mt-1 p-2 w-full border rounded-md"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="email" className="block text-sm font-semibold text-gray-600">
+          Email:
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={dadosPessoais.email}
+          onChange={handleChangeDadosPessoais}
+          className="mt-1 p-2 w-full border rounded-md"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="telefone" className="block text-sm font-semibold text-gray-600">
+          Telefone:
+        </label>
+        <input
+          type="tel"
+          id="telefone"
+          name="telefone"
+          value={dadosPessoais.telefone}
+          onChange={handleChangeDadosPessoais}
+          className="mt-1 p-2 w-full border rounded-md"
+        />
+      </div>
+
+      <h2 className="text-2xl font-bold mb-4 mt-8">Endereço</h2>
+
+      {/* Endereço */}
+      <div className="mb-4">
+        <label htmlFor="rua" className="block text-sm font-semibold text-gray-600">
+          Rua:
+        </label>
+        <input
+          type="text"
+          id="rua"
+          name="rua"
+          value={endereco.rua}
+          onChange={handleChangeEndereco}
+          className="mt-1 p-2 w-full border rounded-md"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="cidade" className="block text-sm font-semibold text-gray-600">
+          Cidade:
+        </label>
+        <input
+          type="text"
+          id="cidade"
+          name="cidade"
+          value={endereco.cidade}
+          onChange={handleChangeEndereco}
+          className="mt-1 p-2 w-full border rounded-md"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="estado" className="block text-sm font-semibold text-gray-600">
+          Estado:
+        </label>
+        <input
+          type="text"
+          id="estado"
+          name="estado"
+          value={endereco.estado}
+          onChange={handleChangeEndereco}
+          className="mt-1 p-2 w-full border rounded-md"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="cep" className="block text-sm font-semibold text-gray-600">
+          CEP:
+        </label>
+        <input
+          type="text"
+          id="cep"
+          name="cep"
+          value={endereco.cep}
+          onChange={handleChangeEndereco}
+          className="mt-1 p-2 w-full border rounded-md"
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+      >
+        Cadastrar
+      </button>
+    </form>
+  );
+};
+
+export default CadastroForm;
