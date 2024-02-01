@@ -5,15 +5,15 @@ import { Editor } from '@/Components/Editor'
 import InputLabel from '@/Components/InputLabel'
 import PrimaryButton from '@/Components/PrimaryButton'
 import { useForm } from 'react-hook-form'
-import { toast, ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
-import { FormEventHandler, useEffect, useState } from 'react'
+import { FormEventHandler, useState } from 'react'
 import { Paginate } from '@/Components/Paginate'
 import { Trash, Eye, PencilLine } from '@phosphor-icons/react'
 import Modal from '@/Components/Modal'
 import DangerButton from '@/Components/DangerButton'
 import SecondaryButton from '@/Components/SecondaryButton'
 import InputError from '@/Components/InputError'
+import { sanitizeFildBodyEditor } from '../../Helpers/sanitizeEditor'
 
 type WordCellData = {
     id: string
@@ -95,6 +95,10 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
     }
 
     const onSubmit = (data: WordCellData) => {
+
+        const sanitizeEditor = sanitizeFildBodyEditor(data.body)
+         if (!sanitizeEditor)  return
+
         router.post('wordcell', data)
 
         if (!data.sketch)
@@ -126,8 +130,8 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
                                 placeholder="Digite um titulo para a palavra de célula..."
                                 disabled={onlyView}
                                 {...register('title', { required: true })}
-                                required
                             />
+                            {errors.title && <span className='text-white'>This field is required</span>}
                             <InputError message={errors.title} className="mt-2" />
                         </div>
                         <div className="mt-6 space-y-2">
@@ -151,7 +155,6 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
                         <span className='text-gray-600 text-md uppercase tracking-tight'>últimas palavras de célula</span>
                     </div>
                     <div className="relative rounded-lg overflow-x-auto shadow-sm mt-4">
-                        <ToastContainer />
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead
                                 className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -202,11 +205,11 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
                 <Modal maxWidth={'md'} show={confirmingUserEdition} onClose={closeModal}>
                     <form onSubmit={handleSubmitDelete} className="p-6">
                         <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                            Tem certeza que deseja deletar?
+                            Deseja deletar?
                         </h2>
 
                         <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                            A palavra "célula" será deletada permanentemente.
+                            A palavra de "célula" será deletada permanentemente.
                         </p>
 
                         <div className="mt-6 flex justify-end">
@@ -222,7 +225,7 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
                 <Modal maxWidth={'md'} show={confirmingSaving} onClose={closeModalSave}>
                     <form onSubmit={handleSubmit(onSubmit)} className="p-6">
                         <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                            Tem certeza que deseja salvar e enviar?
+                            Deseja salvar e enviar?
                         </h2>
 
                         <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">

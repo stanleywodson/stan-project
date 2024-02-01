@@ -56,7 +56,6 @@ class WordcellController extends Controller
      */
     public function show(string $id)
     {
-        dd('showww');
         return Inertia::render('Admin/CellWord', [
             'wordcell' => Wordcell::find($id),
         ]);
