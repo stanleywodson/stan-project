@@ -97,7 +97,7 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
     const onSubmit = (data: WordCellData) => {
 
         const sanitizeEditor = sanitizeFildBodyEditor(data.body)
-         if (!sanitizeEditor)  return
+        if (!sanitizeEditor) return
 
         router.post('wordcell', data)
 
