@@ -6,7 +6,7 @@ import InputLabel from '@/Components/InputLabel'
 import PrimaryButton from '@/Components/PrimaryButton'
 import { useForm } from 'react-hook-form'
 import "react-toastify/dist/ReactToastify.css";
-import { FormEventHandler, useState } from 'react'
+import { FormEventHandler, useEffect, useState } from 'react'
 import { Paginate } from '@/Components/Paginate'
 import { Trash, Eye, PencilLine } from '@phosphor-icons/react'
 import Modal from '@/Components/Modal'
@@ -28,15 +28,14 @@ type WordCell<T extends Record<string, unknown> = Record<string, unknown>> = T &
     links: Links[]
 }
 
-export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
-    errors: { title: string, body: string }, wordcells: WordCell
-}>) {
+export default function CellWord({ auth, flash, wordcells }: PageProps<{ wordcells: WordCell }>) {
     const [wordcell, setWordcell] = useState<WordCellData>()
     const [confirmingUserEdition, setconfirmingUserEdition] = useState(false)
     const [confirmingSaving, setconfirmingSaving] = useState(false)
     const [idWordcell, setIdWordcell] = useState('')
     const [onlyView, setOnlyView] = useState(false)
-    const { handleSubmit, setValue, reset, register } = useForm<WordCellData>({
+    const [messageErrorEditor, setMessageErrorEditor] = useState(false)
+    const { handleSubmit, setValue, reset, register, formState: { errors } } = useForm<WordCellData>({
         defaultValues: {
             'id': '',
             'title': '',
@@ -44,6 +43,12 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
             'sketch': false
         }
     })
+
+    useEffect(() => {
+        if (messageErrorEditor) {
+            setTimeout(() => setMessageErrorEditor(false), 3000)
+        }
+    }, [messageErrorEditor])
 
     const isNotPageable = 1
 
@@ -78,6 +83,7 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
     }
 
     const filterEditWordcell = (id: string, title: string, body: string, action?: boolean) => {
+        reset()
         const wordcell = wordcells.data.find((item) => item.id === id)
         //vão ser renderizados na tela
         setValue('id', id)
@@ -97,8 +103,12 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
     const onSubmit = (data: WordCellData) => {
 
         const sanitizeEditor = sanitizeFildBodyEditor(data.body)
-        if (!sanitizeEditor) return
-
+        if (!sanitizeEditor) {
+            setMessageErrorEditor(true)
+            setconfirmingSaving(false)
+            return
+        }
+        setMessageErrorEditor(false)
         router.post('wordcell', data)
 
         if (!data.sketch)
@@ -129,20 +139,16 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
                                 className="w-full sm:max-w-xl rounded-lg text-sm text-gray-900 border border-gray-300 bg-gray-50 disabled:opacity-50  focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Digite um titulo para a palavra de célula..."
                                 disabled={onlyView}
-                                {...register('title', { required: true })}
+                                {...register('title', { required: "O campo titulo é obrigatório!" })}
                             />
-                            {errors.title && <span className='text-white'>This field is required</span>}
-                            <InputError message={errors.title} className="mt-2" />
+                            {errors.title && <InputError message={errors.title?.message} className="mt-2" />}
                         </div>
                         <div className="mt-6 space-y-2">
                             <Editor setEditor={setValue} readonly={onlyView} content={wordcell?.body} />
-                            <InputError message={errors.body} className="mt-2" />
-
+                            {messageErrorEditor && <InputError message="Não há texto inserido!" className="mt-2" />}
                         </div>
                         {!onlyView ?
                             <div className='flex-col sm:space-x-2 sm:flex sm:flex-row sm:justify-end'>
-                                {/* <PrimaryButton onClick={() => setValue('sketch', true)} className='w-full sm:w-auto mt-4'>Salvar como rascunho</PrimaryButton> */}
-                                {/* <PrimaryButton onClick={() => setValue('sketch', false)} className='w-full sm:w-auto mt-4'>Salvar e enviar</PrimaryButton> */}
                                 <SecondaryButton type='submit' className='w-full sm:w-auto mt-4' onClick={() => setValue('sketch', true)}>Salvar como rascunho</SecondaryButton>
                                 <PrimaryButton onClick={showSaveModal} className='w-full sm:w-auto mt-4'>Salvar e enviar</PrimaryButton>
                             </div>
@@ -184,8 +190,14 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
                                         <td className="px-6 py-4">
                                             <div className="flex font-medium space-x-5 ">
                                                 {!sketch ?
-                                                    <span className='text-gray-300 hover:underline cursor-pointer hover:text-blue-400' onClick={() => filterEditWordcell(id, title, body)}><Eye size={19} /></span> :
-                                                    <span className='text-yellow-600 hover:underline cursor-pointer hover:text-yellow-400' onClick={() => filterEditWordcell(id, title, body, true)}><PencilLine size={19} /></span>
+                                                    <span
+                                                        className='text-gray-300 hover:underline cursor-pointer hover:text-blue-400'
+                                                        onClick={() => filterEditWordcell(id, title, body)}><Eye size={19} />
+                                                    </span> :
+                                                    <span
+                                                        className='text-yellow-600 hover:underline cursor-pointer hover:text-yellow-400'
+                                                        onClick={() => filterEditWordcell(id, title, body, true)}><PencilLine size={19} />
+                                                    </span>
                                                 }
                                                 <span className='cursor-pointer'
                                                     onClick={() => showDeleteModal(id)}><Trash size={19}
@@ -235,7 +247,7 @@ export default function CellWord({ auth, flash, errors, wordcells }: PageProps<{
                         <div className="mt-6 flex justify-end">
                             <SecondaryButton onClick={closeModalSave}>Cancelar</SecondaryButton>
 
-                            <PrimaryButton className="ms-3 dark:bg-green-700 dark:text-white dark:focus:bg-green-600  dark:hover:bg-green-600">
+                            <PrimaryButton className="ms-3">
                                 Salvar e enviar
                             </PrimaryButton>
                         </div>
