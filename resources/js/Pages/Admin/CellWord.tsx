@@ -13,7 +13,7 @@ import Modal from '@/Components/Modal'
 import DangerButton from '@/Components/DangerButton'
 import SecondaryButton from '@/Components/SecondaryButton'
 import InputError from '@/Components/InputError'
-import { sanitizeFildBodyEditor } from '../../Helpers/sanitizeEditor'
+import { sanitizeFildBodyEditor } from '@/Helpers/sanitizeEditor'
 
 type WordCellData = {
     id: string
@@ -28,7 +28,7 @@ type WordCell<T extends Record<string, unknown> = Record<string, unknown>> = T &
     links: Links[]
 }
 
-export default function CellWord({ auth, flash, wordcells }: PageProps<{ wordcells: WordCell }>) {
+export default function CellWord({ auth, wordcells }: PageProps<{ wordcells: WordCell }>) {
     const [wordcell, setWordcell] = useState<WordCellData>()
     const [confirmingUserEdition, setconfirmingUserEdition] = useState(false)
     const [confirmingSaving, setconfirmingSaving] = useState(false)
@@ -139,6 +139,7 @@ export default function CellWord({ auth, flash, wordcells }: PageProps<{ wordcel
                                 className="w-full sm:max-w-xl rounded-lg text-sm text-gray-900 border border-gray-300 bg-gray-50 disabled:opacity-50  focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Digite um titulo para a palavra de célula..."
                                 disabled={onlyView}
+                                autoFocus={true}
                                 {...register('title', { required: "O campo titulo é obrigatório!" })}
                             />
                             {errors.title && <InputError message={errors.title?.message} className="mt-2" />}
