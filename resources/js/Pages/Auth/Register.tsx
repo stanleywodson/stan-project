@@ -14,7 +14,7 @@ type Register = {
     cpf: string
     email: string
     password: string
-    confirm_password: string
+    password_confirmation: string
     address: {
         cep: string
         city: string
@@ -32,7 +32,7 @@ export default function Register() {
             cpf: '',
             email: '',
             password: '',
-            confirm_password: '',
+            password_confirmation: '',
             address: {
                 cep: '',
                 city: '',
@@ -210,9 +210,9 @@ export default function Register() {
                                     id="confirm_password"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="•••••••••"
-                                    {...register('confirm_password', { required: "O campo confirmar senha é obrigatório" })}
+                                    {...register('password_confirmation', { required: "O campo confirmar senha é obrigatório" })}
                                 />
-                                {errors.confirm_password && <InputError message={errors.confirm_password.message} className="mt-1" />}
+                                {errors.password_confirmation && <InputError message={errors.password_confirmation.message} className="mt-1" />}
                             </div>
                             <div className='text-right'>
                                 <PrimaryButton className="ms-4">
