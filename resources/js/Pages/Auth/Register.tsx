@@ -20,6 +20,8 @@ type Register = {
         city: string
         neighborhood: string
         complement: string
+        phone: string
+        number: string
     }
 }
 
@@ -38,6 +40,8 @@ export default function Register() {
                 city: '',
                 neighborhood: '',
                 complement: '',
+                phone: '',
+                number: '',
             },
         }
     })
@@ -97,8 +101,8 @@ export default function Register() {
                                 />
                                 {errors.name && <InputError message={errors.name.message} className="mt-1" />}
                             </div>
-                            <div className="grid gap-6 mb-6 md:grid-cols-2 mt-6">
-                                <div>
+                            <div className="grid gap-6 mb-6 md:grid-cols-6 mt-6">
+                                <div className='col-span-6 md:col-span-2'>
                                     <label htmlFor="cpf" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cpf</label>
                                     <input
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -109,7 +113,7 @@ export default function Register() {
                                     />
                                     {errors.cpf && <InputError message={errors.cpf.message} className="mt-1" />}
                                 </div>
-                                <div>
+                                <div className='col-span-3 md:col-span-2'>
                                     <label htmlFor="birth" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data de Nascimento</label>
                                     <input
                                         type="date"
@@ -119,7 +123,7 @@ export default function Register() {
                                     />
                                     {errors.birth && <InputError message={errors.birth.message} className="mt-1" />}
                                 </div>
-                                <div>
+                                <div className='col-span-3 md:col-span-2'>
                                     <label htmlFor="gender" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gênero</label>
                                     <select
                                         id="gender"
@@ -132,7 +136,7 @@ export default function Register() {
                                     </select>
                                     {errors.gender && <InputError message={errors.gender.message} className="mt-1" />}
                                 </div>
-                                <div>
+                                <div className='col-span-3'>
                                     <label htmlFor="cep" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cep</label>
                                     <input
                                         type="text" id="cep"
@@ -142,7 +146,18 @@ export default function Register() {
                                     />
                                     {errors.address?.cep && <InputError message={errors.address.cep.message} className="mt-1" />}
                                 </div>
+                                <div className='col-span-3'>
+                                    <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefone</label>
+                                    <input
+                                        type="text" id="phone"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="(99)99999-9999"
+                                        {...register('address.phone', { required: "O campo telefone é obrigatório" })}
+                                    />
+                                    {errors.address?.phone && <InputError message={errors.address.phone.message} className="mt-1" />}
+                                </div>
                             </div>
+
                             <div className="grid gap-6 mb-6 md:grid-cols-2 mt-6">
                                 <div>
                                     <label htmlFor="neighborhood" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Bairro</label>
@@ -171,15 +186,27 @@ export default function Register() {
                                     {errors.address?.city && <InputError message={errors.address?.city.message} className="mt-1" />}
                                 </div>
                             </div>
-                            <div className="mb-6">
-                                <label htmlFor="complement" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Complemento</label>
-                                <input
-                                    type="text"
-                                    id="complement"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Rua da ponte, 23..."
-                                    {...register('address.complement')}
-                                />
+                            <div className="grid gap-6 mb-6 md:grid-cols-4 mt-6">
+                                <div className='col-span-3'>
+                                    <label htmlFor="complement" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Complemento</label>
+                                    <input
+                                        type="text"
+                                        id="complement"
+                                        className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Rua da ponte, 23..."
+                                        {...register('address.complement')}
+                                    />
+                                </div>
+                                <div className='col-span-1'>
+                                    <label htmlFor="number" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Número</label>
+                                    <input
+                                        type="text"
+                                        id="number"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="23..."
+                                        {...register('address.number')}
+                                    />
+                                </div>
                             </div>
                             <div className="mb-6">
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
