@@ -42,7 +42,7 @@ class RegisteredUserController extends Controller
                 'address.city' => 'required|string',
                 'address.neighborhood' => 'required|string',
                 'address.phone' => 'required|string',
-                'address.number' => 'required|string',
+                'address.number' => 'string',
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             ]
         );
