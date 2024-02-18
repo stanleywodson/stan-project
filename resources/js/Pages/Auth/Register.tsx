@@ -1,11 +1,13 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form'
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Head, router } from '@inertiajs/react';
 import AcendaLuz from '../../../images/banners/acenda-luz.jpg'
 import axios from 'axios';
 import InputError from '@/Components/InputError';
-import { brasiliancities } from '../../mocks/brasiliancities'
+import InputMask from '@/Components/InputMask';
+
+import { brasiliancities } from '@/mocks/brasiliancities'
 
 type Register = {
     name: string
@@ -25,8 +27,26 @@ type Register = {
     }
 }
 
+// interface Usuario {
+//     cep: string;
+//     cpf: string;
+//     price: number;
+// }
+
 export default function Register() {
-    const { handleSubmit, setValue, reset, register, watch, formState: { errors }, } = useForm<Register>({
+    // const [usuario, setUsuario] = useState<Usuario>({} as Usuario);
+
+    // const handleChange = useCallback(
+    //     (e: React.FormEvent<HTMLInputElement>) => {
+    //         setUsuario({
+    //             ...usuario,
+    //             [e.currentTarget.name]: e.currentTarget.value,
+    //         });
+    //     },
+    //     [usuario]
+    // )
+
+    const { handleSubmit, setValue, register, watch, formState: { errors }, } = useForm<Register>({
         defaultValues: {
             name: '',
             gender: '',
@@ -81,6 +101,7 @@ export default function Register() {
                     <img
                         className="w-full h-full object-cover bg-orange-500 "
                         src={AcendaLuz}
+                        alt="image acenda uma luz"
                     />
                 </div>
                 <div className='flex flex-1  justify-center p-2 mt-4'>
@@ -91,7 +112,9 @@ export default function Register() {
                         </div>
                         <form className='mt-4' onSubmit={handleSubmit(onSubmit)}>
                             <div className='mt-6'>
-                                <label htmlFor="full_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome Completo</label>
+                                <label htmlFor="full_name"
+                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome
+                                    Completo</label>
                                 <input
                                     type="text"
                                     id="full_name"
@@ -101,9 +124,18 @@ export default function Register() {
                                 />
                                 {errors.name && <InputError message={errors.name.message} className="mt-1" />}
                             </div>
+                            {/* <div className='mt-6'>
+                                <InputMask
+                                    name="cep"
+                                    mask="cep"
+                                    onChange={handleChange}
+                                    placeholder="99999-999"
+                                />
+                            </div> */}
                             <div className="grid gap-6 mb-6 md:grid-cols-6 mt-6">
                                 <div className='col-span-6 md:col-span-2'>
-                                    <label htmlFor="cpf" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cpf</label>
+                                    <label htmlFor="cpf"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cpf</label>
                                     <input
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="000.000.000-00"
@@ -114,7 +146,9 @@ export default function Register() {
                                     {errors.cpf && <InputError message={errors.cpf.message} className="mt-1" />}
                                 </div>
                                 <div className='col-span-3 md:col-span-2'>
-                                    <label htmlFor="birth" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data de Nascimento</label>
+                                    <label htmlFor="birth"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data
+                                        de Nascimento</label>
                                     <input
                                         type="date"
                                         id="birth"
@@ -124,7 +158,8 @@ export default function Register() {
                                     {errors.birth && <InputError message={errors.birth.message} className="mt-1" />}
                                 </div>
                                 <div className='col-span-3 md:col-span-2'>
-                                    <label htmlFor="gender" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gênero</label>
+                                    <label htmlFor="gender"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gênero</label>
                                     <select
                                         id="gender"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -137,40 +172,47 @@ export default function Register() {
                                     {errors.gender && <InputError message={errors.gender.message} className="mt-1" />}
                                 </div>
                                 <div className='col-span-3'>
-                                    <label htmlFor="cep" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cep</label>
+                                    <label htmlFor="cep"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cep</label>
                                     <input
                                         type="text" id="cep"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="71690000"
                                         {...register('address.cep', { required: "O campo cep é obrigatório" })}
                                     />
-                                    {errors.address?.cep && <InputError message={errors.address.cep.message} className="mt-1" />}
+                                    {errors.address?.cep &&
+                                        <InputError message={errors.address.cep.message} className="mt-1" />}
                                 </div>
                                 <div className='col-span-3'>
-                                    <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefone</label>
+                                    <label htmlFor="phone"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefone</label>
                                     <input
                                         type="text" id="phone"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="(99)99999-9999"
                                         {...register('address.phone', { required: "O campo telefone é obrigatório" })}
                                     />
-                                    {errors.address?.phone && <InputError message={errors.address.phone.message} className="mt-1" />}
+                                    {errors.address?.phone &&
+                                        <InputError message={errors.address.phone.message} className="mt-1" />}
                                 </div>
                             </div>
 
                             <div className="grid gap-6 mb-6 md:grid-cols-2 mt-6">
                                 <div>
-                                    <label htmlFor="neighborhood" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Bairro</label>
+                                    <label htmlFor="neighborhood"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Bairro</label>
                                     <input
                                         type="text"
                                         id="neighborhood"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         {...register('address.neighborhood', { required: "O campo bairro é obrigatório" })}
                                     />
-                                    {errors.address?.neighborhood && <InputError message={errors.address.neighborhood.message} className="mt-1" />}
+                                    {errors.address?.neighborhood &&
+                                        <InputError message={errors.address.neighborhood.message} className="mt-1" />}
                                 </div>
                                 <div>
-                                    <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cidade</label>
+                                    <label htmlFor="city"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cidade</label>
                                     <select
                                         id="city"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -183,12 +225,14 @@ export default function Register() {
                                             </option>
                                         ))}
                                     </select>
-                                    {errors.address?.city && <InputError message={errors.address?.city.message} className="mt-1" />}
+                                    {errors.address?.city &&
+                                        <InputError message={errors.address?.city.message} className="mt-1" />}
                                 </div>
                             </div>
                             <div className="grid gap-6 mb-6 md:grid-cols-4 mt-6">
                                 <div className='col-span-3'>
-                                    <label htmlFor="complement" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Complemento</label>
+                                    <label htmlFor="complement"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Complemento</label>
                                     <input
                                         type="text"
                                         id="complement"
@@ -198,7 +242,8 @@ export default function Register() {
                                     />
                                 </div>
                                 <div className='col-span-1'>
-                                    <label htmlFor="number" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Número</label>
+                                    <label htmlFor="number"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Número</label>
                                     <input
                                         type="text"
                                         id="number"
@@ -209,7 +254,8 @@ export default function Register() {
                                 </div>
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                                <label htmlFor="email"
+                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
                                 <input
                                     type="email"
                                     id="email"
@@ -220,7 +266,8 @@ export default function Register() {
                                 {errors.email && <InputError message={errors.email.message} className="mt-1" />}
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Senha</label>
+                                <label htmlFor="password"
+                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Senha</label>
                                 <input
                                     type="password"
                                     id="password"
@@ -231,7 +278,9 @@ export default function Register() {
                                 {errors.password && <InputError message={errors.password.message} className="mt-1" />}
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="confirm_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirmar senha</label>
+                                <label htmlFor="confirm_password"
+                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirmar
+                                    senha</label>
                                 <input
                                     type="password"
                                     id="confirm_password"
@@ -239,7 +288,8 @@ export default function Register() {
                                     placeholder="•••••••••"
                                     {...register('password_confirmation', { required: "O campo confirmar senha é obrigatório" })}
                                 />
-                                {errors.password_confirmation && <InputError message={errors.password_confirmation.message} className="mt-1" />}
+                                {errors.password_confirmation &&
+                                    <InputError message={errors.password_confirmation.message} className="mt-1" />}
                             </div>
                             <div className='text-right'>
                                 <PrimaryButton className="ms-4">
