@@ -43,6 +43,7 @@ class RegisteredUserController extends Controller
                 'address.neighborhood' => 'required|string',
                 'address.phone' => 'required|string',
                 'address.number' => 'string',
+                'address.complement' => 'string',
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             ]
         );
@@ -55,6 +56,15 @@ class RegisteredUserController extends Controller
             'gender' => $request->gender,
             'status' => '',
             'password' => Hash::make($request->password),
+        ]);
+
+        $user->address()->create([
+            'cep' => $request->address['cep'],
+            'city' => $request->address['city'],
+            'neighborhood' => $request->address['neighborhood'],
+            'phone' => $request->address['phone'],
+            'number' => $request->address['number'],
+            'complement' => $request->address['complement'],
         ]);
 
         event(new Registered($user));

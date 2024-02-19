@@ -71,4 +71,9 @@ class User extends Authenticatable
     {
         return $this->whereDoesntHave('permissions')->count();
     }
+
+    public function address()
+    {
+        return $this->morphOne(Address::class, 'addressable');
+    }
 }
