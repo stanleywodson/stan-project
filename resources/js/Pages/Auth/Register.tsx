@@ -8,24 +8,8 @@ import InputError from '@/Components/InputError';
 import InputMask from '@/Components/InputMask';
 
 import { brasiliancities } from '@/mocks/brasiliancities'
-
-type Register = {
-    name: string
-    gender: string
-    birth: string
-    cpf: string
-    email: string
-    password: string
-    password_confirmation: string
-    address: {
-        cep: string
-        city: string
-        neighborhood: string
-        complement: string
-        phone: string
-        number: string
-    }
-}
+import { ErrorBackend } from '@/types/error-backend';
+import { RegisterProps } from '@/types/register';
 
 // interface Usuario {
 //     cep: string;
@@ -33,7 +17,8 @@ type Register = {
 //     price: number;
 // }
 
-export default function Register() {
+export default function Register({ errors: errors_backend }: ErrorBackend) {
+
     // const [usuario, setUsuario] = useState<Usuario>({} as Usuario);
 
     // const handleChange = useCallback(
@@ -46,7 +31,7 @@ export default function Register() {
     //     [usuario]
     // )
 
-    const { handleSubmit, setValue, register, watch, formState: { errors }, } = useForm<Register>({
+    const { handleSubmit, setValue, register, watch, formState: { errors }, } = useForm<RegisterProps>({
         defaultValues: {
             name: '',
             gender: '',
@@ -66,13 +51,7 @@ export default function Register() {
         }
     })
 
-    // const submit: FormEventHandler = (e) => {
-    //     e.preventDefault();
-
-    //     post(route('register'));
-    // }
-
-    const onSubmit = (data: Register) => {
+    const onSubmit = (data: RegisterProps) => {
         router.post('register', data)
     }
 
@@ -122,7 +101,7 @@ export default function Register() {
                                     placeholder="Nome completo..."
                                     {...register('name', { required: "O campo nome é obrigatório" })}
                                 />
-                                {errors.name && <InputError message={errors.name.message} className="mt-1" />}
+                                {<InputError message={errors.name?.message ?? errors_backend?.name} className="mt-1" />}
                             </div>
                             {/* <div className='mt-6'>
                                 <InputMask
@@ -143,7 +122,8 @@ export default function Register() {
                                         id="cpf"
                                         {...register('cpf', { required: "O campo cpf é obrigatório" })}
                                     />
-                                    {errors.cpf && <InputError message={errors.cpf.message} className="mt-1" />}
+                                    {/* {<InputError message={errors.cpf?.message ?? errors_backend?.cpf} className="mt-1" />} */}
+                                    {<InputError message={errors.cpf?.message ?? errors_backend?.cpf} className="mt-1" />}
                                 </div>
                                 <div className='col-span-3 md:col-span-2'>
                                     <label htmlFor="birth"
@@ -155,7 +135,7 @@ export default function Register() {
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         {...register('birth', { required: "O campo data de nascimento é obrigatório" })}
                                     />
-                                    {errors.birth && <InputError message={errors.birth.message} className="mt-1" />}
+                                    {<InputError message={errors.birth?.message ?? errors_backend?.birth} className="mt-1" />}
                                 </div>
                                 <div className='col-span-3 md:col-span-2'>
                                     <label htmlFor="gender"
@@ -169,7 +149,7 @@ export default function Register() {
                                         <option value="masculino">Masculino</option>
                                         <option value="feminino">Feminino</option>
                                     </select>
-                                    {errors.gender && <InputError message={errors.gender.message} className="mt-1" />}
+                                    {<InputError message={errors.gender?.message ?? errors_backend?.gender} className="mt-1" />}
                                 </div>
                                 <div className='col-span-3'>
                                     <label htmlFor="cep"
@@ -180,8 +160,7 @@ export default function Register() {
                                         placeholder="71690000"
                                         {...register('address.cep', { required: "O campo cep é obrigatório" })}
                                     />
-                                    {errors.address?.cep &&
-                                        <InputError message={errors.address.cep.message} className="mt-1" />}
+                                    {<InputError message={errors?.address?.cep?.message} className="mt-1" />}
                                 </div>
                                 <div className='col-span-3'>
                                     <label htmlFor="phone"
@@ -192,8 +171,7 @@ export default function Register() {
                                         placeholder="(99)99999-9999"
                                         {...register('address.phone', { required: "O campo telefone é obrigatório" })}
                                     />
-                                    {errors.address?.phone &&
-                                        <InputError message={errors.address.phone.message} className="mt-1" />}
+                                    {<InputError message={errors?.address?.phone?.message} className="mt-1" />}
                                 </div>
                             </div>
 
@@ -207,8 +185,7 @@ export default function Register() {
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         {...register('address.neighborhood', { required: "O campo bairro é obrigatório" })}
                                     />
-                                    {errors.address?.neighborhood &&
-                                        <InputError message={errors.address.neighborhood.message} className="mt-1" />}
+                                    {<InputError message={errors?.address?.neighborhood?.message} className="mt-1" />}
                                 </div>
                                 <div>
                                     <label htmlFor="city"
@@ -225,8 +202,7 @@ export default function Register() {
                                             </option>
                                         ))}
                                     </select>
-                                    {errors.address?.city &&
-                                        <InputError message={errors.address?.city.message} className="mt-1" />}
+                                    {<InputError message={errors?.address?.city?.message} className="mt-1" />}
                                 </div>
                             </div>
                             <div className="grid gap-6 mb-6 md:grid-cols-4 mt-6">
@@ -263,7 +239,7 @@ export default function Register() {
                                     placeholder="john.doe@company.com"
                                     {...register('email', { required: "O campo email é obrigatório" })}
                                 />
-                                {errors.email && <InputError message={errors.email.message} className="mt-1" />}
+                                {<InputError message={errors.email?.message ?? errors_backend?.email} className="mt-1" />}
                             </div>
                             <div className="mb-6">
                                 <label htmlFor="password"
@@ -275,7 +251,7 @@ export default function Register() {
                                     placeholder="•••••••••"
                                     {...register('password', { required: "O campo senha é obrigatório" })}
                                 />
-                                {errors.password && <InputError message={errors.password.message} className="mt-1" />}
+                                {<InputError message={errors.password?.message ?? errors_backend?.password} className="mt-1" />}
                             </div>
                             <div className="mb-6">
                                 <label htmlFor="confirm_password"
@@ -288,8 +264,7 @@ export default function Register() {
                                     placeholder="•••••••••"
                                     {...register('password_confirmation', { required: "O campo confirmar senha é obrigatório" })}
                                 />
-                                {errors.password_confirmation &&
-                                    <InputError message={errors.password_confirmation.message} className="mt-1" />}
+                                {<InputError message={errors.password_confirmation?.message ?? errors_backend?.password_confirmation} className="mt-1" />}
                             </div>
                             <div className='text-right'>
                                 <PrimaryButton className="ms-4">
