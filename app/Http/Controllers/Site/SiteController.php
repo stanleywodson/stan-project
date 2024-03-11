@@ -12,7 +12,7 @@ class SiteController extends Controller
     // will be return all datas for website
     public function __invoke(): Response
     {
-        return Inertia::render('Welcome', [
+        return Inertia::render('Site/Site', [
             'laravelVersion' => Application::VERSION,
             'phpVersion' => PHP_VERSION,
         ]);

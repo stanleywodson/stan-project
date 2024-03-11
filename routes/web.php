@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+Route::get('/', SiteController::class);
+
 Route::post('admin/test', function(Request $request) {
     dd($request->title);
 })->name('test');

@@ -9,13 +9,18 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.tsx',
     ],
-
+    mode: "jit",
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                // sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                poppins: ["Poppins", "sans-serif"],
             },
             colors: {
+                primary: "#00040f",
+                secondary: "#00f6ff",
+                dimWhite: "rgba(255, 255, 255, 0.7)",
+                dimBlue: "rgba(9, 151, 124, 0.1)",
                 // gray: {
                 //     // 100: '#E1E1E6',
                 //     // 300: '#C4C4CC',
@@ -55,7 +60,16 @@ export default {
                 // },
             },
         },
+        screens: {
+            xs: "480px",
+            ss: "620px",
+            sm: "768px",
+            md: "1060px",
+            lg: "1200px",
+            xl: "1700px",
+        },
     },
 
     plugins: [forms],
+    // plugins: [],
 };
