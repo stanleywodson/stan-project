@@ -3,7 +3,7 @@ import g12 from "../../../images/banners/g12.jpg"
 export const Carousel = () => {
     return (
         <div id="default-carousel" className="relative w-full" data-carousel="slide">
-            <div className="relative h-56 overflow-hidden rounded-lg md:h-[700px]">
+            <div className="relative h-56 overflow-hidden md:h-[700px]">
 
                 <div className="hidden duration-900 ease-in-out" data-carousel-item>
                     <img src={banner} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 object-cover" alt="..." />
